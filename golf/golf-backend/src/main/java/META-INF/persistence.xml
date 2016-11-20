@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+	<persistence-unit name="PU" transaction-type="RESOURCE_LOCAL">
+		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+		<class>com.kumbirai.golf.data.entity.Person</class>
+		<class>com.kumbirai.golf.data.entity.info.PersonInfo</class>
+		<class>com.kumbirai.golf.data.entity.info.PersonInfoEmail</class>
+		<class>com.kumbirai.golf.data.entity.info.PersonInfoTel</class>
+		<class>com.kumbirai.golf.data.entity.info.PersonInfoWebAddress</class>
+		<class>com.kumbirai.golf.data.course.GolfCourse</class>
+		<class>com.kumbirai.golf.data.course.HoleInfo</class>
+		<class>com.kumbirai.golf.data.score.ScoreCard</class>
+		<class>com.kumbirai.golf.data.score.Score</class>
+		<class>com.kumbirai.golf.data.score.Match</class>
+		<class>com.kumbirai.golf.data.entity.info.PersonInfoLoginProfile</class>
+		<class>com.kumbirai.golf.data.security.SecurityRole</class>
+		<class>com.kumbirai.golf.data.event.GolfEvent</class>
+		<class>com.kumbirai.golf.data.event.GolfEventResult</class>
+		<class>com.kumbirai.golf.data.entity.info.PersonInfoGolfDetails</class>
+		<shared-cache-mode>NONE</shared-cache-mode>
+		<properties>
+<!--			<property name="javax.persistence.jdbc.url" value="jdbc:derby:C:\Derby\GolfAppDB;create=true;upgrade=true"/>
+			<property name="javax.persistence.jdbc.user" value="admin"/>
+			<property name="javax.persistence.jdbc.password" value="password"/>
+			<property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver"/>
+			<property name="eclipselink.ddl-generation" value="create-or-extend-tables" />
+-->			<!--<property name="eclipselink.ddl-generation" value="drop-and-create-tables" /> -->
+			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/GolfAppDB" />
+			<property name="javax.persistence.jdbc.user" value="root" />
+			<property name="javax.persistence.jdbc.password" value="admin" />
+			<property name="eclipselink.ddl-generation" value="create-or-extend-tables" />
+			<property name="eclipselink.create-ddl-jdbc-file-name" value="createDDL_ddlGeneration.jdbc" />
+			<property name="eclipselink.drop-ddl-jdbc-file-name" value="dropDDL_ddlGeneration.jdbc" />
+			<property name="eclipselink.ddl-generation.output-mode" value="both" />
+			<property name="eclipselink.logging.level" value="ALL" />
+			<property name="eclipselink.logging.file" value="eclipselink.log" />
+			<property name="eclipselink.persistence-context.flush-mode" value="COMMIT" />
+		</properties>
+	</persistence-unit>
+</persistence>
