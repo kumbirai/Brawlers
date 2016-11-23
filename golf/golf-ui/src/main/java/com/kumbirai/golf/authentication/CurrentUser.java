@@ -132,4 +132,30 @@ public final class CurrentUser
 		personInfoLoginProfile.setSecurityRoles(new ArrayList<>());
 		return personInfoLoginProfile;
 	}
+
+	/**
+	 * Purpose:
+	 * <br>
+	 * getSuperUser<br>
+	 * <br>
+	 * @return<br>
+	 */
+	public static ISecurityPrincipal getSuperUser()
+	{
+		PersonInfoLoginProfile profile = DataService.get().login("superuser", "superuser");
+		Person person = profile.getPerson();
+		SecurityPrincipal securityPrincipal = (SecurityPrincipal) SecurityPrincipalFactory.getInstance().getSecurityPrincipal(person.getPersonNo(),
+				person.getFirstName(), person.getLastName());
+		securityPrincipal.setUserRoles(new ArrayList<>());
+		for (SecurityRole role : profile.getSecurityRoles())
+			securityPrincipal.getUserRoles().add(role.getRole());
+		securityPrincipal.setTitle(person.getTitle().name());
+		securityPrincipal.setEntityNo(person.getPersonNo());
+		for (PersonInfo info : person.getPersonInfoCollection())
+		{
+			if (info instanceof PersonInfoEmail && ((PersonInfoEmail) info).getStatus() == EStatus.ACTIVE)
+				securityPrincipal.setEmail(((PersonInfoEmail) info).getEmailAddress());
+		}
+		return securityPrincipal;
+	}
 }

@@ -27,9 +27,9 @@ public class PersonInfoTel extends PersonInfo implements Serializable
 	@Column(nullable = false, length = 3)
 	private String countryCode = "27";
 	@Column(nullable = false, length = 3)
-	private String telCode;
+	private String telCode = "";
 	@Column(nullable = false, length = 7)
-	private String telNo;
+	private String telNo = "";
 
 	/**
 	 * Constructor:

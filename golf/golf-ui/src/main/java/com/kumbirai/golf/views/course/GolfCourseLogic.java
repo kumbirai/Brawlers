@@ -176,7 +176,7 @@ public class GolfCourseLogic implements Serializable
 	 */
 	public void deleteGolfCourse(GolfCourse golfCourse)
 	{
-		DataService.get().deleteGolfCourse(securityPrincipal, golfCourse);
+		DataService.get().delete(securityPrincipal, golfCourse);
 		view.showSaveNotification(golfCourse.getCourseName() + " (" + golfCourse.getGolfCourseNo() + ") removed");
 
 		view.clearSelection();

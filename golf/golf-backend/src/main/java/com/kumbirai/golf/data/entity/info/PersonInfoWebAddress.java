@@ -25,7 +25,7 @@ public class PersonInfoWebAddress extends PersonInfo implements Serializable
 	private static final long serialVersionUID = 1L;
 
 	@Column(nullable = false)
-	private String webAddress;
+	private String webAddress = "";
 
 	/**
 	 * Constructor:

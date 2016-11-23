@@ -10,7 +10,7 @@ import javax.persistence.metamodel.CollectionAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="Dali", date="2016-11-20T12:49:17.486+0200")
+@Generated(value="Dali", date="2016-11-23T21:36:59.124+0200")
 @StaticMetamodel(GolfEvent.class)
 public class GolfEvent_ {
 	public static volatile SingularAttribute<GolfEvent, Long> eventNo;

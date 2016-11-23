@@ -54,6 +54,7 @@ public class GolfDataService extends DataService
 	private PersonInfoLoginProfileFacade personInfoLoginProfileFacade = new PersonInfoLoginProfileFacade();
 	private PersonInfoTelFacade personInfoTelFacade = new PersonInfoTelFacade();
 	private PersonInfoWebAddressFacade personInfoWebAddressFacade = new PersonInfoWebAddressFacade();
+	private PersonInfoLoginProfileFacade personInfoLoginProfile = new PersonInfoLoginProfileFacade();
 	private GolfEventFacade golfEventFacade = new GolfEventFacade();
 	private GolfEventResultFacade golfEventResultFacade = new GolfEventResultFacade();
 	private MatchFacade matchFacade = new MatchFacade();
@@ -249,10 +250,10 @@ public class GolfDataService extends DataService
 	}
 
 	/** (non-Javadoc)
-	 * @see com.kumbirai.golf.backend.DataService#deleteGolfEvent(com.kumbirai.security.principal.ISecurityPrincipal, com.kumbirai.golf.data.event.GolfEvent)
+	 * @see com.kumbirai.golf.backend.DataService#delete(com.kumbirai.security.principal.ISecurityPrincipal, com.kumbirai.golf.data.event.GolfEvent)
 	 */
 	@Override
-	public void deleteGolfEvent(ISecurityPrincipal securityPrincipal, GolfEvent golfEvent)
+	public void delete(ISecurityPrincipal securityPrincipal, GolfEvent golfEvent)
 	{
 		golfEventFacade.setSecurityPrincipal(securityPrincipal);
 		golfEventFacade.delete(golfEvent);
@@ -298,12 +299,22 @@ public class GolfDataService extends DataService
 	}
 
 	/** (non-Javadoc)
-	 * @see com.kumbirai.golf.backend.DataService#deleteGolfCourse(com.kumbirai.security.principal.ISecurityPrincipal, com.kumbirai.golf.data.course.GolfCourse)
+	 * @see com.kumbirai.golf.backend.DataService#delete(com.kumbirai.security.principal.ISecurityPrincipal, com.kumbirai.golf.data.course.GolfCourse)
 	 */
 	@Override
-	public void deleteGolfCourse(ISecurityPrincipal securityPrincipal, GolfCourse golfCourse)
+	public void delete(ISecurityPrincipal securityPrincipal, GolfCourse golfCourse)
 	{
 		golfCourseFacade.setSecurityPrincipal(securityPrincipal);
 		golfCourseFacade.delete(golfCourse);
+	}
+
+	/** (non-Javadoc)
+	 * @see com.kumbirai.golf.backend.DataService#save(com.kumbirai.security.principal.ISecurityPrincipal, com.kumbirai.golf.data.entity.info.PersonInfoLoginProfile)
+	 */
+	@Override
+	public void save(ISecurityPrincipal securityPrincipal, PersonInfoLoginProfile personInfoLoginProfile)
+	{
+		personInfoLoginProfileFacade.setSecurityPrincipal(securityPrincipal);
+		personInfoLoginProfileFacade.save(personInfoLoginProfile);
 	}
 }

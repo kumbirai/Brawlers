@@ -46,6 +46,7 @@ public class Match extends ValueObject implements Serializable
 	@OneToOne
 	@JoinColumn(name = "eventNo", referencedColumnName = "eventNo")
 	private GolfEvent golfEvent;
+	private Integer eventMatchNo = 0;
 	@OneToMany(fetch = EAGER, cascade = ALL, mappedBy = "matchUp")
 	private Collection<ScoreCard> scoreCards;
 
@@ -76,7 +77,7 @@ public class Match extends ValueObject implements Serializable
 	/** Getter for the <code>golfEvent</code> attribute.<br>
 	 * @return GolfEvent - value of the attribute <code>golfEvent</code>.
 	 */
-	public GolfEvent getEvent()
+	public GolfEvent getGolfEvent()
 	{
 		return this.golfEvent;
 	}
@@ -84,9 +85,25 @@ public class Match extends ValueObject implements Serializable
 	/** Setter for the <code>golfEvent</code> attribute.<br>
 	 * @param GolfEvent golfEvent
 	 */
-	public void setEvent(GolfEvent golfEvent)
+	public void setGolfEvent(GolfEvent golfEvent)
 	{
 		this.golfEvent = golfEvent;
+	}
+
+	/** Getter for the <code>eventMatchNo</code> attribute.<br>
+	 * @return Integer - value of the attribute <code>eventMatchNo</code>.
+	 */
+	public Integer getEventMatchNo()
+	{
+		return this.eventMatchNo;
+	}
+
+	/** Setter for the <code>eventMatchNo</code> attribute.<br>
+	 * @param Integer eventMatchNo
+	 */
+	public void setEventMatchNo(Integer eventMatchNo)
+	{
+		this.eventMatchNo = eventMatchNo;
 	}
 
 	/** Getter for the <code>scoreCards</code> attribute.<br>

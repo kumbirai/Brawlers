@@ -7,25 +7,23 @@
  */
 package com.kumbirai.golf.component;
 
-import java.util.Arrays;
+import java.util.Collection;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.kumbirai.golf.authentication.CurrentUser;
-import com.kumbirai.golf.data.entity.EGender;
-import com.kumbirai.golf.data.entity.ETitle;
 import com.kumbirai.golf.data.event.GolfEvent;
+import com.kumbirai.golf.data.score.Match;
+import com.kumbirai.golf.data.score.ScoreCard;
 import com.kumbirai.golf.event.DashboardEvent.CloseOpenWindowsEvent;
 import com.kumbirai.golf.event.DashboardEvent.EventUpdatedEvent;
 import com.kumbirai.golf.event.DashboardEventBus;
-import com.kumbirai.golf.ui.NumberField;
 import com.kumbirai.security.principal.ISecurityPrincipal;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitEvent;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitHandler;
-import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Page;
@@ -33,20 +31,18 @@ import com.vaadin.server.Responsive;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.MarginInfo;
+import com.vaadin.ui.Accordion;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.TabSheet;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -124,35 +120,35 @@ public class GolfEventWindow extends Window
 
 	private ISecurityPrincipal securityPrincipal = CurrentUser.get();
 
-	@PropertyId("title")
-	private ComboBox titleField;
-	@PropertyId("firstName")
-	private TextField firstNameField;
-	@PropertyId("lastName")
-	private TextField lastNameField;
-	@PropertyId("gender")
-	private ComboBox genderField;
-	@PropertyId("emailAddress")
-	private TextField emailField;
-	@PropertyId("memberNo")
-	private TextField memberNoField;
-	@PropertyId("handicap")
-	private NumberField handicapField;
-	@PropertyId("countryCode")
-	private TextField countryCodeField;
-	@PropertyId("telCode")
-	private TextField telCodeField;
-	@PropertyId("telNo")
-	private TextField telNoField;
-	@PropertyId("webAddress")
-	private TextField websiteField;
-
 	/**
 	 * Constructor: @param golfEvent
 	 * Constructor: @param preferencesTabOpen
 	 */
 	private GolfEventWindow(final GolfEvent golfEvent, final boolean preferencesTabOpen)
 	{
+		golfEventFieldGroup = new BeanFieldGroup<>(GolfEvent.class);
+		golfEventFieldGroup.bindMemberFields(this);
+		golfEventFieldGroup.setItemDataSource(golfEvent);
+		golfEventFieldGroup.addCommitHandler(new CommitHandler()
+		{
+			/**
+			 * serialVersionUID
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void preCommit(CommitEvent commitEvent) throws CommitException
+			{
+				//
+			}
+
+			@Override
+			public void postCommit(CommitEvent commitEvent) throws CommitException
+			{
+				//
+			}
+		});
+
 		addStyleName("event-window");
 		setId(ID);
 		Responsive.makeResponsive(this);
@@ -176,8 +172,8 @@ public class GolfEventWindow extends Window
 		content.addComponent(detailsWrapper);
 		content.setExpandRatio(detailsWrapper, 1f);
 
-		detailsWrapper.addComponent(buildEventTab());
-		detailsWrapper.addComponent(buildPreferencesTab());
+		detailsWrapper.addComponent(buildConfirmedPlayersTab());
+		detailsWrapper.addComponent(buildMatchesTab());
 
 		if (preferencesTabOpen)
 		{
@@ -185,52 +181,40 @@ public class GolfEventWindow extends Window
 		}
 
 		content.addComponent(buildFooter());
-
-		golfEventFieldGroup = new BeanFieldGroup<>(GolfEvent.class);
-		golfEventFieldGroup.bindMemberFields(this);
-		golfEventFieldGroup.setItemDataSource(golfEvent);
-		golfEventFieldGroup.addCommitHandler(new CommitHandler()
-		{
-			/**
-			 * serialVersionUID
-			 */
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void preCommit(CommitEvent commitEvent) throws CommitException
-			{
-				//
-			}
-
-			@Override
-			public void postCommit(CommitEvent commitEvent) throws CommitException
-			{
-				//
-			}
-		});
 	}
 
-	/**
-	 * Purpose:
-	 * <br>
-	 * buildPreferencesTab<br>
-	 * <br>
-	 * @return<br>
-	 */
-	private Component buildPreferencesTab()
+	private Component buildMatchesTab()
 	{
 		VerticalLayout root = new VerticalLayout();
-		root.setCaption("Preferences");
+		root.setCaption("Matches");
 		root.setIcon(FontAwesome.COGS);
 		root.setSpacing(true);
 		root.setMargin(true);
-		root.setSizeFull();
+		// root.setSizeFull()
 
-		Label message = new Label("Not yet implemented");
-		message.setSizeUndefined();
-		message.addStyleName(ValoTheme.LABEL_LIGHT);
-		root.addComponent(message);
-		root.setComponentAlignment(message, Alignment.MIDDLE_CENTER);
+		Collection<Match> matchCollection = golfEventFieldGroup.getItemDataSource().getBean().getMatches();
+
+		if (matchCollection != null && !matchCollection.isEmpty())
+		{
+			Accordion matches = new Accordion();
+			// matches.setHeight(100.0f, Unit.PERCENTAGE)
+			root.addComponent(matches);
+
+			for (Match match : matchCollection)
+			{
+				matches.addTab(getMatchComponent(match), "Match " + match.getEventMatchNo());
+			}
+			root.setComponentAlignment(matches, Alignment.MIDDLE_CENTER);
+		}
+		else
+		{
+			root.addComponent(new Label("There are no matches created..."));
+		}
+		Button create = new Button("Add Match");
+		create.addStyleName(ValoTheme.BUTTON_PRIMARY);
+		create.addClickListener(new OkButtonClickListener());
+		create.focus();
+		root.addComponent(create);
 
 		return root;
 	}
@@ -238,14 +222,51 @@ public class GolfEventWindow extends Window
 	/**
 	 * Purpose:
 	 * <br>
-	 * buildEventTab<br>
+	 * getMatchComponent<br>
+	 * <br>
+	 * @param match
+	 * @return<br>
+	 */
+	private Component getMatchComponent(Match match)
+	{
+		VerticalLayout layout = new VerticalLayout();
+		for (ScoreCard scoreCard : match.getScoreCards())
+		{
+			HorizontalLayout player = new HorizontalLayout();
+			layout.addComponent(player);
+
+			player.addComponent(new Label(scoreCard.getPerson().getName()));
+		}
+		HorizontalLayout buttons = new HorizontalLayout();
+		layout.addComponent(buttons);
+
+		Button edit = new Button("Edit");
+		edit.addStyleName(ValoTheme.BUTTON_TINY);
+		edit.addClickListener(new OkButtonClickListener());
+		edit.focus();
+		buttons.addComponent(edit);
+
+		Button scores = new Button("Scores");
+		scores.addStyleName(ValoTheme.BUTTON_TINY);
+		scores.addClickListener(new OkButtonClickListener());
+		scores.focus();
+		buttons.addComponent(scores);
+
+		layout.setSpacing(false);
+		return layout;
+	}
+
+	/**
+	 * Purpose:
+	 * <br>
+	 * buildConfirmedPlayersTab<br>
 	 * <br>
 	 * @return<br>
 	 */
-	private Component buildEventTab()
+	private Component buildConfirmedPlayersTab()
 	{
 		HorizontalLayout root = new HorizontalLayout();
-		root.setCaption("Event");
+		root.setCaption("Confirmed Players");
 		root.setIcon(FontAwesome.USER);
 		root.setWidth(100.0f, Unit.PERCENTAGE);
 		root.setSpacing(true);
@@ -259,75 +280,7 @@ public class GolfEventWindow extends Window
 		eventPic.setWidth(100.0f, Unit.PIXELS);
 		pic.addComponent(eventPic);
 
-		Button upload = new Button("Change...", new ClickListener()
-		{
-			/**
-			 * serialVersionUID
-			 */
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void buttonClick(ClickEvent event)
-			{
-				Notification.show("Not yet implemented");
-			}
-		});
-		upload.addStyleName(ValoTheme.BUTTON_TINY);
-		pic.addComponent(upload);
-
 		root.addComponent(pic);
-
-		FormLayout details = new FormLayout();
-		details.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
-		root.addComponent(details);
-		root.setExpandRatio(details, 1);
-
-		firstNameField = new TextField("First Name");
-		details.addComponent(firstNameField);
-		lastNameField = new TextField("Last Name");
-		details.addComponent(lastNameField);
-
-		titleField = new ComboBox("Title", Arrays.asList(ETitle.values()));
-		details.addComponent(titleField);
-
-		genderField = new ComboBox("Gender", Arrays.asList(EGender.values()));
-		details.addComponent(genderField);
-
-		Label section = new Label("Contact Info");
-		section.addStyleName(ValoTheme.LABEL_H4);
-		section.addStyleName(ValoTheme.LABEL_COLORED);
-		details.addComponent(section);
-
-		emailField = new TextField("Email");
-		emailField.setWidth("100%");
-		emailField.setRequired(true);
-		details.addComponent(emailField);
-
-		HorizontalLayout telephone = new HorizontalLayout();
-		countryCodeField = new TextField("Mobile Number");
-		countryCodeField.setWidth(3, Unit.EM);
-		telephone.addComponent(countryCodeField);
-		telCodeField = new TextField("");
-		telCodeField.setWidth(3, Unit.EM);
-		telephone.addComponent(telCodeField);
-		telNoField = new TextField("");
-		telNoField.setWidth(6, Unit.EM);
-		telephone.addComponent(telNoField);
-		details.addComponent(telephone);
-
-		section = new Label("Additional Info");
-		section.addStyleName(ValoTheme.LABEL_H4);
-		section.addStyleName(ValoTheme.LABEL_COLORED);
-		details.addComponent(section);
-
-		memberNoField = new TextField("SAGA Member Number");
-		details.addComponent(memberNoField);
-		handicapField = new NumberField("Handicap");
-		details.addComponent(handicapField);
-
-		websiteField = new TextField("Website");
-		websiteField.setWidth("100%");
-		details.addComponent(websiteField);
 
 		return root;
 	}

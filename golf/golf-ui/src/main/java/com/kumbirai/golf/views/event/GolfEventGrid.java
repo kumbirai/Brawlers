@@ -26,7 +26,6 @@ import com.vaadin.data.util.converter.StringToDateConverter;
 import com.vaadin.data.util.filter.Or;
 import com.vaadin.data.util.filter.SimpleStringFilter;
 import com.vaadin.ui.Grid;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.renderers.ButtonRenderer;
 
 /**
@@ -85,7 +84,6 @@ public class GolfEventGrid extends Grid
 		eventDate.setRenderer(new ButtonRenderer(e ->
 		{
 			GolfEventWindow.open((GolfEvent) e.getItemId(), false);
-			Notification.show("Clicked " + e.getItemId());
 		}));
 
 		Grid.Column stableford = getColumn("stableford");

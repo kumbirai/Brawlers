@@ -15,8 +15,8 @@ public class PersonInfoGolfDetails extends PersonInfo implements Serializable
 	private static final long serialVersionUID = 1L;
 
 	@Column(length = 50)
-	private String memberNo;
-	private Integer handicap;
+	private String memberNo = "";
+	private Integer handicap = 0;
 
 	/**
 	 * Constructor:

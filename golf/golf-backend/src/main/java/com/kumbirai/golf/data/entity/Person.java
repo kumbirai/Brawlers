@@ -15,6 +15,7 @@ import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
@@ -59,14 +60,16 @@ public class Person extends ValueObject implements Serializable, Comparable<Pers
 	@Column(length = 20, nullable = false)
 	private ETitle title;
 	@Column(length = 10)
-	private String initials;
+	private String initials = "";
 	@Column(length = 50)
-	private String firstName;
+	private String firstName = "";
 	@Column(length = 50)
-	private String lastName;
+	private String lastName = "";
 	@Enumerated(STRING)
 	@Column(length = 10, nullable = false)
 	private EGender gender;
+	@Lob
+	private byte[] profilePic;
 	@OneToMany(cascade = ALL, mappedBy = "person")
 	private Collection<ScoreCard> scoreCards;
 
@@ -231,6 +234,22 @@ public class Person extends ValueObject implements Serializable, Comparable<Pers
 	public void setGender(EGender gender)
 	{
 		this.gender = gender;
+	}
+
+	/** Getter for the <code>profilePic</code> attribute.<br>
+	 * @return byte[] - value of the attribute <code>profilePic</code>.
+	 */
+	public byte[] getProfilePic()
+	{
+		return this.profilePic;
+	}
+
+	/** Setter for the <code>profilePic</code> attribute.<br>
+	 * @param byte[] profilePic
+	 */
+	public void setProfilePic(byte[] profilePic)
+	{
+		this.profilePic = profilePic;
 	}
 
 	/** Getter for the <code>scoreCards</code> attribute.<br>

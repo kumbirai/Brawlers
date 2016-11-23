@@ -178,12 +178,12 @@ public abstract class DataService implements Serializable
 	/**
 	 * Purpose:
 	 * <br>
-	 * deleteGolfEvent<br>
+	 * delete<br>
 	 * <br>
 	 * @param securityPrincipal
-	 * @param eventNo<br>
+	 * @param golfEvent<br>
 	 */
-	public abstract void deleteGolfEvent(ISecurityPrincipal securityPrincipal, GolfEvent golfEvent);
+	public abstract void delete(ISecurityPrincipal securityPrincipal, GolfEvent golfEvent);
 
 	/**
 	 * Purpose:
@@ -228,10 +228,20 @@ public abstract class DataService implements Serializable
 	/**
 	 * Purpose:
 	 * <br>
-	 * deleteGolfCourse<br>
+	 * delete<br>
 	 * <br>
 	 * @param securityPrincipal
 	 * @param golfCourse<br>
 	 */
-	public abstract void deleteGolfCourse(ISecurityPrincipal securityPrincipal, GolfCourse golfCourse);
+	public abstract void delete(ISecurityPrincipal securityPrincipal, GolfCourse golfCourse);
+
+	/**
+	 * Purpose:
+	 * <br>
+	 * save<br>
+	 * <br>
+	 * @param securityPrincipal
+	 * @param personInfoLoginProfile<br>
+	 */
+	public abstract void save(ISecurityPrincipal securityPrincipal, PersonInfoLoginProfile personInfoLoginProfile);
 }

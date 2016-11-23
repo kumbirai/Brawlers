@@ -21,8 +21,9 @@ import com.vaadin.data.util.converter.StringToIntegerConverter;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
 import com.vaadin.ui.Grid;
+import com.vaadin.ui.Grid.CellReference;
+import com.vaadin.ui.Grid.CellStyleGenerator;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.themes.ValoTheme;
 
 /**
  * <p><b>Purpose:</b><br>
@@ -45,6 +46,13 @@ public class HoleInfoField extends CustomField<Collection<HoleInfo>>
 	 */
 	private static final long serialVersionUID = 1L;
 	private static final Logger LOGGER = LogManager.getLogger(HoleInfoField.class.getName());
+
+	private static final String HOLE_NUMBER = "holeNumber";
+	private static final String MEN_PAR_RATING = "menParRating";
+	private static final String MEN_STROKE_RATING = "menStrokeRating";
+	private static final String LADIES_PAR_RATING = "ladiesParRating";
+	private static final String LADIES_STROKE_RATING = "ladiesStrokeRating";
+
 	private VerticalLayout holeLayout;
 	private Grid grid;
 
@@ -61,23 +69,25 @@ public class HoleInfoField extends CustomField<Collection<HoleInfo>>
 
 		BeanItemContainer<HoleInfo> container = new BeanItemContainer<>(HoleInfo.class);
 		grid.setContainerDataSource(container);
-		grid.setColumns("holeNumber", "menParRating", "menStrokeRating", "ladiesParRating", "ladiesStrokeRating");
+		grid.setColumns(HOLE_NUMBER, MEN_PAR_RATING, MEN_STROKE_RATING, LADIES_PAR_RATING, LADIES_STROKE_RATING);
 
-		grid.addStyleName(ValoTheme.TABLE_BORDERLESS);
-		grid.addStyleName(ValoTheme.TABLE_COMPACT);
+		// grid.addStyleName(ValoTheme.TABLE_BORDERLESS)
+		// grid.addStyleName(ValoTheme.TABLE_COMPACT)
+
+		grid.addStyleName("holeinfo");
 
 		// Set nicer header names
-		grid.getDefaultHeaderRow().getCell("holeNumber").setText("Hole");
-		grid.getDefaultHeaderRow().getCell("menParRating").setText("Par");
-		grid.getDefaultHeaderRow().getCell("menStrokeRating").setText("Stroke");
-		grid.getDefaultHeaderRow().getCell("ladiesParRating").setText("Par");
-		grid.getDefaultHeaderRow().getCell("ladiesStrokeRating").setText("Stroke");
+		grid.getDefaultHeaderRow().getCell(HOLE_NUMBER).setText("Hole");
+		grid.getDefaultHeaderRow().getCell(MEN_PAR_RATING).setText("Par");
+		grid.getDefaultHeaderRow().getCell(MEN_STROKE_RATING).setText("Stroke");
+		grid.getDefaultHeaderRow().getCell(LADIES_PAR_RATING).setText("Par");
+		grid.getDefaultHeaderRow().getCell(LADIES_STROKE_RATING).setText("Stroke");
 
 		for (Grid.Column column : grid.getColumns())
 		{
 			column.setMaximumWidth(10);
 			column.setSortable(false);
-			if ("holeNumber".equalsIgnoreCase(column.getPropertyId() + ""))
+			if (HOLE_NUMBER.equalsIgnoreCase(column.getPropertyId() + ""))
 			{
 				column.setEditable(false);
 			}
@@ -106,6 +116,31 @@ public class HoleInfoField extends CustomField<Collection<HoleInfo>>
 				});
 			}
 		}
+		grid.setCellStyleGenerator(new CellStyleGenerator()
+		{
+			/**
+			 * serialVersionUID
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public String getStyle(CellReference cellReference)
+			{
+				if (cellReference.getPropertyId().equals(HOLE_NUMBER))
+				{
+					return "hole";
+				}
+				if (cellReference.getPropertyId().equals(MEN_PAR_RATING) || cellReference.getPropertyId().equals(MEN_STROKE_RATING))
+				{
+					return "men";
+				}
+				if (cellReference.getPropertyId().equals(LADIES_PAR_RATING) || cellReference.getPropertyId().equals(LADIES_STROKE_RATING))
+				{
+					return "ladies";
+				}
+				return null;
+			}
+		});
 
 		holeLayout.addComponent(grid);
 	}

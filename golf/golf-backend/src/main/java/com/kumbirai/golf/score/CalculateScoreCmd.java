@@ -82,7 +82,7 @@ public class CalculateScoreCmd extends AbstractCommand
 						scoreCard.getHandicap());
 
 			calculateStablefordPoints(score, stablefordParScore);
-			if (score.getIpsResult() == IPSResult.BLOW && scoreCard.getMatchUp().getEvent().isStableford())
+			if (score.getIpsResult() == IPSResult.BLOW && scoreCard.getMatchUp().getGolfEvent().isStableford())
 				score.setStrokes(stablefordParScore + 2);
 		}
 		LOGGER.info("Scores Calculated");

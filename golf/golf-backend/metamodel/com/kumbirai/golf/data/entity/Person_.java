@@ -9,7 +9,7 @@ import javax.persistence.metamodel.CollectionAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="Dali", date="2016-11-20T12:49:17.476+0200")
+@Generated(value="Dali", date="2016-11-23T21:36:59.116+0200")
 @StaticMetamodel(Person.class)
 public class Person_ {
 	public static volatile SingularAttribute<Person, Long> personNo;
@@ -21,5 +21,6 @@ public class Person_ {
 	public static volatile SingularAttribute<Person, String> firstName;
 	public static volatile SingularAttribute<Person, String> lastName;
 	public static volatile SingularAttribute<Person, EGender> gender;
+	public static volatile SingularAttribute<Person, byte[]> profilePic;
 	public static volatile CollectionAttribute<Person, ScoreCard> scoreCards;
 }

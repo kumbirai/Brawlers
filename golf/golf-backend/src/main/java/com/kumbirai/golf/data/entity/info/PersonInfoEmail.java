@@ -25,7 +25,7 @@ public class PersonInfoEmail extends PersonInfo implements Serializable
 	private static final long serialVersionUID = 1L;
 
 	@Column(nullable = false)
-	private String emailAddress;
+	private String emailAddress = "";
 
 	/**
 	 * Constructor:

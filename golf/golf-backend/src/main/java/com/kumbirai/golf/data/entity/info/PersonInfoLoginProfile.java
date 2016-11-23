@@ -34,9 +34,9 @@ public class PersonInfoLoginProfile extends PersonInfo implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	@Column(nullable = false, length = 50, unique = true)
-	private String username;
+	private String username = "";
 	@Column(nullable = false, length = 50)
-	private String password;
+	private String password = "";
 	@ManyToMany(fetch = EAGER)
 	@JoinTable(name = "LoginProfileSecurityRole", joinColumns = @JoinColumn(name = "personInfoNo", referencedColumnName = "personInfoNo"),
 			inverseJoinColumns = @JoinColumn(name = "securityRoleNo", referencedColumnName = "securityRoleNo"))
@@ -101,7 +101,7 @@ public class PersonInfoLoginProfile extends PersonInfo implements Serializable
 	@Override
 	public String toString()
 	{
-		return String.format("PersonInfoLoginProfile [%s, %s %s, %s, %s]", this.getPersonInfoNo(), this.getPerson().getFirstName(), this.getPerson().getLastName(),
-				this.username, this.securityRoles);
+		return String.format("PersonInfoLoginProfile [%s, %s %s, %s, %s]", this.getPersonInfoNo(), this.getPerson().getFirstName(),
+				this.getPerson().getLastName(), this.username, this.securityRoles);
 	}
 }

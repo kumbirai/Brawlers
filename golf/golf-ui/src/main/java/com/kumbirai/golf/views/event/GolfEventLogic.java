@@ -176,7 +176,7 @@ public class GolfEventLogic implements Serializable
 	 */
 	public void deleteGolfEvent(GolfEvent golfEvent)
 	{
-		DataService.get().deleteGolfEvent(securityPrincipal, golfEvent);
+		DataService.get().delete(securityPrincipal, golfEvent);
 		view.showSaveNotification(golfEvent.getEventDate() + " (" + golfEvent.getEventNo() + ") removed");
 
 		view.clearSelection();

@@ -5,7 +5,7 @@ import javax.annotation.Generated;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="Dali", date="2016-11-20T12:49:17.492+0200")
+@Generated(value="Dali", date="2016-11-23T21:36:59.129+0200")
 @StaticMetamodel(GolfEventResult.class)
 public class GolfEventResult_ {
 	public static volatile SingularAttribute<GolfEventResult, Long> eventNo;
