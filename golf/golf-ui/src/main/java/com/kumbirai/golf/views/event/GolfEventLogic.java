@@ -160,7 +160,7 @@ public class GolfEventLogic implements Serializable
 	 */
 	public void saveGolfEvent(GolfEvent golfEvent)
 	{
-		view.showSaveNotification(golfEvent.getEventDate() + " (" + golfEvent.getEventNo() + ") updated");
+		// view.showSaveNotification(golfEvent.getEventDate() + " (" + golfEvent.getEventNo() + ") updated")
 		view.clearSelection();
 		view.editGolfEvent(null);
 		view.refreshGolfEvent(golfEvent);
@@ -177,7 +177,7 @@ public class GolfEventLogic implements Serializable
 	public void deleteGolfEvent(GolfEvent golfEvent)
 	{
 		DataService.get().delete(securityPrincipal, golfEvent);
-		view.showSaveNotification(golfEvent.getEventDate() + " (" + golfEvent.getEventNo() + ") removed");
+		// view.showSaveNotification(golfEvent.getEventDate() + " (" + golfEvent.getEventNo() + ") removed")
 
 		view.clearSelection();
 		view.editGolfEvent(null);

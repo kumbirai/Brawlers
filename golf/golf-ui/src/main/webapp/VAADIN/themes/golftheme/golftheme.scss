@@ -104,7 +104,7 @@ $v-layout-spacing-horizontal: round($v-unit-size / 1.8) !default;
     top: -100;
     bottom: 0;
     z-index: 100;
-    width: round($v-unit-size * 13);
+    width: round($v-unit-size * 9);
     height: 100%;
     overflow: auto;
     padding: $v-layout-spacing-vertical $v-layout-spacing-horizontal;
@@ -573,12 +573,12 @@ $v-layout-spacing-horizontal: round($v-unit-size / 1.8) !default;
       vertical-align: middle;
     }
     .v-grid-row-odd,
-    .men {
+    .men-odd {
       background-color: #B6D3FF;
       vertical-align: middle;
     }
     .v-grid-row-odd,
-    .ladies {
+    .ladies-odd {
       background-color: #FFB6E2;
       vertical-align: middle;
     }

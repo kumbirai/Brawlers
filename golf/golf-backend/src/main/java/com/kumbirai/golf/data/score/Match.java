@@ -5,6 +5,7 @@ import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.GenerationType.TABLE;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.Entity;
@@ -48,7 +49,7 @@ public class Match extends ValueObject implements Serializable
 	private GolfEvent golfEvent;
 	private Integer eventMatchNo = 0;
 	@OneToMany(fetch = EAGER, cascade = ALL, mappedBy = "matchUp")
-	private Collection<ScoreCard> scoreCards;
+	private Collection<ScoreCard> scoreCards = new ArrayList<>();
 
 	/**
 	 * Constructor:

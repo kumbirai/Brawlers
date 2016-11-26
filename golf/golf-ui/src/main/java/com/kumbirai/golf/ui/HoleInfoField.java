@@ -23,6 +23,7 @@ import com.vaadin.ui.CustomField;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.CellReference;
 import com.vaadin.ui.Grid.CellStyleGenerator;
+import com.vaadin.ui.Grid.RowStyleGenerator;
 import com.vaadin.ui.VerticalLayout;
 
 /**
@@ -65,7 +66,7 @@ public class HoleInfoField extends CustomField<Collection<HoleInfo>>
 		holeLayout = new VerticalLayout();
 		grid = new Grid();
 		grid.setEditorEnabled(true);
-		grid.setHeightByRows(19);
+		grid.setWidth("350");
 
 		BeanItemContainer<HoleInfo> container = new BeanItemContainer<>(HoleInfo.class);
 		grid.setContainerDataSource(container);
@@ -118,25 +119,23 @@ public class HoleInfoField extends CustomField<Collection<HoleInfo>>
 		}
 		grid.setCellStyleGenerator(new CellStyleGenerator()
 		{
-			/**
-			 * serialVersionUID
-			 */
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public String getStyle(CellReference cellReference)
 			{
+				int holeNum = ((Integer) cellReference.getItem().getItemProperty(HOLE_NUMBER).getValue()).intValue();
 				if (cellReference.getPropertyId().equals(HOLE_NUMBER))
 				{
 					return "hole";
 				}
 				if (cellReference.getPropertyId().equals(MEN_PAR_RATING) || cellReference.getPropertyId().equals(MEN_STROKE_RATING))
 				{
-					return "men";
+					return (holeNum % 2 == 0) ? "men" : "men-odd";
 				}
 				if (cellReference.getPropertyId().equals(LADIES_PAR_RATING) || cellReference.getPropertyId().equals(LADIES_STROKE_RATING))
 				{
-					return "ladies";
+					return (holeNum % 2 == 0) ? "ladies" : "ladies-odd";
 				}
 				return null;
 			}

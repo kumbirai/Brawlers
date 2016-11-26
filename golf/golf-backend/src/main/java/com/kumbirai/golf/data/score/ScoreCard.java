@@ -5,6 +5,7 @@ import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.GenerationType.TABLE;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.Entity;
@@ -45,15 +46,16 @@ public class ScoreCard extends ValueObject implements Serializable
 	@JoinColumn(name = "personNo", referencedColumnName = "personNo")
 	private Person person;
 	@OneToMany(fetch = EAGER, cascade = ALL, mappedBy = "scoreCard")
-	private Collection<Score> scores;
+	private Collection<Score> scores = new ArrayList<>();
 	@OneToOne
 	@JoinColumn(name = "matchNo", referencedColumnName = "matchNo")
 	private Match matchUp;
-	private Integer handicap;
-	private Integer totalStrokes;
-	private Integer netStrokes;
-	private Integer classicPoints;
-	private Integer standardPoints;
+	private Integer lineNumber = 0;
+	private Integer handicap = 0;
+	private Integer totalStrokes = 0;
+	private Integer netStrokes = 0;
+	private Integer classicPoints = 0;
+	private Integer standardPoints = 0;
 	private boolean verified = false;
 	private boolean complete = false;
 
@@ -127,6 +129,22 @@ public class ScoreCard extends ValueObject implements Serializable
 	public void setMatchUp(Match matchUp)
 	{
 		this.matchUp = matchUp;
+	}
+
+	/** Getter for the <code>lineNumber</code> attribute.<br>
+	 * @return Integer - value of the attribute <code>lineNumber</code>.
+	 */
+	public Integer getLineNumber()
+	{
+		return this.lineNumber;
+	}
+
+	/** Setter for the <code>lineNumber</code> attribute.<br>
+	 * @param Integer lineNumber
+	 */
+	public void setLineNumber(Integer lineNumber)
+	{
+		this.lineNumber = lineNumber;
 	}
 
 	/** Getter for the <code>handicap</code> attribute.<br>

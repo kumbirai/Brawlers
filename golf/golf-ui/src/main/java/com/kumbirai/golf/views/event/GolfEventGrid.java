@@ -50,6 +50,15 @@ public class GolfEventGrid extends Grid
 	private static final long serialVersionUID = 1L;
 	private static final Logger LOGGER = LogManager.getLogger(GolfEventGrid.class.getName());
 
+	private static final String EVENT_DATE = "eventDate";
+	private static final String TEE_OFF = "teeOff";
+	private static final String COURSE = "course";
+	private static final String ATTIRE = "attire";
+	private static final String GREEN_FEES = "greenFees";
+	private static final String EVENT_SPONSOR = "eventSponsor";
+	private static final String AVAILABLE_SLOTS = "availableSlots";
+	private static final String STABLEFORD = "stableford";
+
 	/**
 	 * Constructor:
 	 */
@@ -62,9 +71,9 @@ public class GolfEventGrid extends Grid
 
 		BeanItemContainer<GolfEvent> container = new BeanItemContainer<>(GolfEvent.class);
 		setContainerDataSource(container);
-		setColumns("eventDate", "teeOff", "course", "attire", "greenFees", "eventSponsor", "availableSlots", "stableford");
+		setColumns(EVENT_DATE, TEE_OFF, COURSE, ATTIRE, GREEN_FEES, EVENT_SPONSOR, AVAILABLE_SLOTS, STABLEFORD);
 
-		Grid.Column eventDate = getColumn("eventDate");
+		Grid.Column eventDate = getColumn(EVENT_DATE);
 		eventDate.setConverter(new StringToDateConverter()
 		{
 			/**
@@ -81,15 +90,12 @@ public class GolfEventGrid extends Grid
 			}
 		});
 
-		eventDate.setRenderer(new ButtonRenderer(e ->
-		{
-			GolfEventWindow.open((GolfEvent) e.getItemId(), false);
-		}));
+		eventDate.setRenderer(new ButtonRenderer(e -> GolfEventWindow.open((GolfEvent) e.getItemId(), false)));
 
-		Grid.Column stableford = getColumn("stableford");
+		Grid.Column stableford = getColumn(STABLEFORD);
 		stableford.setConverter(new StringToBooleanConverter("Yes", "No"));
 
-		Grid.Column greenFees = getColumn("greenFees");
+		Grid.Column greenFees = getColumn(GREEN_FEES);
 		greenFees.setConverter(new RandConverter());
 
 		setCellStyleGenerator(new CellStyleGenerator()
@@ -102,7 +108,7 @@ public class GolfEventGrid extends Grid
 			@Override
 			public String getStyle(CellReference cellReference)
 			{
-				if (cellReference.getPropertyId().equals("greenFees") || cellReference.getPropertyId().equals("availableSlots"))
+				if (cellReference.getPropertyId().equals(GREEN_FEES) || cellReference.getPropertyId().equals(AVAILABLE_SLOTS))
 				{
 					return "align-right";
 				}
@@ -123,8 +129,8 @@ public class GolfEventGrid extends Grid
 		getContainer().removeAllContainerFilters();
 		if (filterString.length() > 0)
 		{
-			SimpleStringFilter courseFilter = new SimpleStringFilter("course", filterString, true, false);
-			SimpleStringFilter sponsorFilter = new SimpleStringFilter("eventSponsor", filterString, true, false);
+			SimpleStringFilter courseFilter = new SimpleStringFilter(COURSE, filterString, true, false);
+			SimpleStringFilter sponsorFilter = new SimpleStringFilter(EVENT_SPONSOR, filterString, true, false);
 			getContainer().addContainerFilter(new Or(courseFilter, sponsorFilter));
 		}
 
@@ -137,6 +143,7 @@ public class GolfEventGrid extends Grid
 	 * <br>
 	 * @return<br>
 	 */
+	@SuppressWarnings("unchecked")
 	private BeanItemContainer<GolfEvent> getContainer()
 	{
 		return (BeanItemContainer<GolfEvent>) super.getContainerDataSource();
@@ -171,6 +178,7 @@ public class GolfEventGrid extends Grid
 	 * <br>
 	 * @param golfEvent<br>
 	 */
+	@SuppressWarnings("rawtypes")
 	public void refresh(GolfEvent golfEvent)
 	{
 		// We avoid updating the whole table through the backend here so we can

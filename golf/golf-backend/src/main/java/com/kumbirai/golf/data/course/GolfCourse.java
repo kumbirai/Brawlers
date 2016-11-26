@@ -41,9 +41,9 @@ public class GolfCourse extends ValueObject implements Serializable
 	@TableGenerator(name = "GolfCourseSeq", allocationSize = 3, initialValue = 1)
 	private Long golfCourseNo;
 	@Column(length = 250, nullable = false)
-	private String courseName;
+	private String courseName = "";
 	@OneToMany(cascade = ALL, fetch = EAGER, mappedBy = "course")
-	private Collection<HoleInfo> holes;
+	private Collection<HoleInfo> holes = new ArrayList<>();
 
 	/**
 	 * Constructor:

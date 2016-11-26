@@ -6,13 +6,14 @@ import javax.persistence.metamodel.CollectionAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="Dali", date="2016-11-23T21:36:59.147+0200")
+@Generated(value="Dali", date="2016-11-26T12:00:28.123+0200")
 @StaticMetamodel(ScoreCard.class)
 public class ScoreCard_ {
 	public static volatile SingularAttribute<ScoreCard, Long> scoreCardNo;
 	public static volatile SingularAttribute<ScoreCard, Person> person;
 	public static volatile CollectionAttribute<ScoreCard, Score> scores;
 	public static volatile SingularAttribute<ScoreCard, Match> matchUp;
+	public static volatile SingularAttribute<ScoreCard, Integer> lineNumber;
 	public static volatile SingularAttribute<ScoreCard, Integer> handicap;
 	public static volatile SingularAttribute<ScoreCard, Integer> totalStrokes;
 	public static volatile SingularAttribute<ScoreCard, Integer> netStrokes;

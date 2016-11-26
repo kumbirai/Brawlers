@@ -29,7 +29,7 @@ public class GolfEventResult extends ValueObject implements Serializable
 	private Long eventNo;
 	@Id
 	@Column(nullable = false)
-	private Integer position;
+	private Integer position = 0;
 	@JoinColumn(name = "eventNo", referencedColumnName = "eventNo")
 	private GolfEvent golfEvent;
 	@JoinColumn(name = "scoreCardNo", referencedColumnName = "scoreCardNo")
@@ -130,7 +130,7 @@ public class GolfEventResult extends ValueObject implements Serializable
 	@Override
 	public String toString()
 	{
-		return String.format("GolfEventResult [golfEvent=%s, position=%s, player=%s, tieBreaker=%s]", this.eventNo, this.position, this.scoreCard.getPerson().getName(),
-				this.tieBreaker);
+		return String.format("GolfEventResult [golfEvent=%s, position=%s, player=%s, tieBreaker=%s]", this.eventNo, this.position,
+				this.scoreCard.getPerson().getName(), this.tieBreaker);
 	}
 }

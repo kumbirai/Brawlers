@@ -3,6 +3,7 @@ package com.kumbirai.golf.data.security;
 import static javax.persistence.GenerationType.TABLE;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.Column;
@@ -37,9 +38,9 @@ public class SecurityRole implements Serializable
 	@TableGenerator(name = "SecurityRoleSeq", allocationSize = 3, initialValue = 1)
 	private Long securityRoleNo;
 	@Column(length = 100, nullable = false)
-	private String role;
+	private String role = "";
 	@ManyToMany(mappedBy = "securityRoles")
-	private Collection<PersonInfoLoginProfile> loginProfiles;
+	private Collection<PersonInfoLoginProfile> loginProfiles = new ArrayList<>();
 
 	public SecurityRole()
 	{

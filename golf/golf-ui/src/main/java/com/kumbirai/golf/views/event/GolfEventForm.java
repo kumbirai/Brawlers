@@ -209,6 +209,8 @@ public class GolfEventForm extends GolfEventFormDesign
 			}
 		});
 
+		eventDate.setDateFormat("dd MMM yyyy");
+
 		save.addClickListener(new SaveClickListener());
 
 		cancel.addClickListener(new CancelClickListener());

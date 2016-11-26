@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+ <head>  
+  <meta charset="UTF-8" name="design-properties" content="{&quot;RULERS_VISIBLE&quot;:true,&quot;GUIDELINES_VISIBLE&quot;:false,&quot;SNAP_TO_OBJECTS&quot;:true,&quot;SNAP_TO_GRID&quot;:true,&quot;SNAPPING_DISTANCE&quot;:10,&quot;JAVA_SOURCES_ROOT&quot;:&quot;src/main/java&quot;,&quot;THEME&quot;:&quot;golftheme&quot;}">
+  <meta charset="UTF-8" name="vaadin-version" content="7.7.0">
+  <meta charset="UTF-8" name="package-mapping" content="ui:com.kumbirai.golf.ui">
+ </head> 
+ <body> 
+  <vaadin-css-layout style-name="input-form-wrapper" id="event-form" size-full> 
+   <vaadin-vertical-layout style-name="form-layout"> 
+    <vaadin-form-layout size-full> 
+     <vaadin-date-field required-error="Please enter a date" caption="Event Date" required _id="eventDate"></vaadin-date-field> 
+     <vaadin-combo-box required-error="Please select a course" caption="Course" required null-selection-allowed="false" width="400px" _id="course"></vaadin-combo-box> 
+     <vaadin-text-field required-error="Tee-off time is required" caption="Tee Off Time" required width="80px" _id="teeOff"></vaadin-text-field> 
+     <vaadin-text-area caption="Attire" rows="3" width="250px" height="50px" _id="attire"></vaadin-text-area> 
+     <ui-number-field caption="Green Fees" _id="greenFees"></ui-number-field> 
+     <vaadin-text-field caption="Sponsor" width="350px" _id="eventSponsor"></vaadin-text-field> 
+     <ui-number-field caption="Available Slots" _id="availableSlots"></ui-number-field> 
+     <vaadin-check-box caption="Stableford Scoring" _id="stableford"></vaadin-check-box> 
+    </vaadin-form-layout> 
+    <vaadin-horizontal-layout spacing> 
+     <vaadin-button style-name="primary" _id="save">
+       Save 
+     </vaadin-button> 
+     <vaadin-button style-name="cancel" click-shortcut="escape" _id="cancel">
+       Cancel 
+     </vaadin-button> 
+     <vaadin-button style-name="danger" _id="delete">
+       Delete 
+     </vaadin-button> 
+    </vaadin-horizontal-layout> 
+   </vaadin-vertical-layout> 
+  </vaadin-css-layout>  
+ </body>
+</html>

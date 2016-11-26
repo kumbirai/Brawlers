@@ -100,6 +100,10 @@ public class ProductGrid extends Grid
 		// Align columns using a style generator and theme rule until #15438
 		setCellStyleGenerator(new CellStyleGenerator()
 		{
+			/**
+			 * serialVersionUID
+			 */
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public String getStyle(CellReference cellReference)

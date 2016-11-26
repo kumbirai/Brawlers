@@ -141,7 +141,7 @@ public class GolfCourseView extends CssLayout implements View
 			}
 		});
 
-		newGolfCourse = new Button("New Golf Event");
+		newGolfCourse = new Button("New Golf Course");
 		newGolfCourse.addStyleName(ValoTheme.BUTTON_PRIMARY);
 		newGolfCourse.setIcon(FontAwesome.PLUS_CIRCLE);
 		newGolfCourse.addClickListener(new ClickListener()

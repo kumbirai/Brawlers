@@ -93,7 +93,7 @@ public class PersonInfoTel extends PersonInfo implements Serializable
 	@Override
 	public String toString()
 	{
-		return String.format("PersonInfoTel [%s, %s %s, %s %s %s]", this.getPersonInfoNo(), this.getPerson().getFirstName(), this.getPerson().getLastName(),
-				this.countryCode, this.telCode, this.telNo);
+		return String.format("PersonInfoTel [%s, %s, %s %s %s]", this.getPersonInfoNo(), this.getPerson().getName(), this.countryCode, this.telCode,
+				this.telNo);
 	}
 }

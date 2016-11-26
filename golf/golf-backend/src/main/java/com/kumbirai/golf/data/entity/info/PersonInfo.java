@@ -52,10 +52,10 @@ public abstract class PersonInfo extends ValueObject implements Serializable
 	private Person person;
 	@Enumerated(STRING)
 	@Column(nullable = false, length = 50)
-	private EStatus status;
+	private EStatus status = EStatus.ACTIVE;
 	@Column(nullable = false)
 	@Temporal(DATE)
-	private Date statusDate;
+	private Date statusDate = new Date();
 
 	/**
 	 * Constructor:

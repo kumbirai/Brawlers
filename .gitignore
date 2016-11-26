@@ -50,7 +50,6 @@ Temporary Items
 *.log
 *.class
 *.bak
-*.html
 **/*.jdbc
 sonar-project.properties
 **/.recommenders

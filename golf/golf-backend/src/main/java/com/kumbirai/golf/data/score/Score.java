@@ -39,13 +39,14 @@ public class Score extends ValueObject implements Serializable
 	@GeneratedValue(strategy = TABLE, generator = "ScoreSeq")
 	@TableGenerator(name = "ScoreSeq", allocationSize = 3, initialValue = 1)
 	private Long scoreNo;
+	private Integer holeNumber = 0;
 	@OneToOne
 	@JoinColumn(name = "scoreCardNo", referencedColumnName = "scoreCardNo")
 	private ScoreCard scoreCard;
 	@OneToOne
 	@JoinColumn(name = "holeInfoNo", referencedColumnName = "holeInfoNo")
 	private HoleInfo holeInfo;
-	private Integer strokes;
+	private Integer strokes = 0;
 	@Enumerated(STRING)
 	private IPSResult ipsResult;
 
@@ -71,6 +72,22 @@ public class Score extends ValueObject implements Serializable
 	public void setScoreNo(Long scoreNo)
 	{
 		this.scoreNo = scoreNo;
+	}
+
+	/** Getter for the <code>holeNumber</code> attribute.<br>
+	 * @return Integer - value of the attribute <code>holeNumber</code>.
+	 */
+	public Integer getHoleNumber()
+	{
+		return this.holeNumber;
+	}
+
+	/** Setter for the <code>holeNumber</code> attribute.<br>
+	 * @param Integer holeNumber
+	 */
+	public void setHoleNumber(Integer holeNumber)
+	{
+		this.holeNumber = holeNumber;
 	}
 
 	/** Getter for the <code>scoreCard</code> attribute.<br>

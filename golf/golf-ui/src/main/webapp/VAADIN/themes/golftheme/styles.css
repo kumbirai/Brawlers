@@ -13062,7 +13062,7 @@ div.v-layout.v-horizontal.v-widget {
 	top: -100;
 	bottom: 0;
 	z-index: 100;
-	width: 416px;
+	width: 288px;
 	height: 100%;
 	overflow: auto;
 	padding: 18px 18px;
@@ -14087,12 +14087,12 @@ div.v-layout.v-horizontal.v-widget {
 	vertical-align: middle;
 }
 
-.golftheme .holeinfo .v-grid-row-odd, .golftheme .holeinfo .men {
+.golftheme .holeinfo .v-grid-row-odd, .golftheme .holeinfo .men-odd {
 	background-color: #B6D3FF;
 	vertical-align: middle;
 }
 
-.golftheme .holeinfo .v-grid-row-odd, .golftheme .holeinfo .ladies {
+.golftheme .holeinfo .v-grid-row-odd, .golftheme .holeinfo .ladies-odd {
 	background-color: #FFB6E2;
 	vertical-align: middle;
 }

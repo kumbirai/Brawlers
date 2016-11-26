@@ -183,11 +183,18 @@ public class GolfEventWindow extends Window
 		content.addComponent(buildFooter());
 	}
 
+	/**
+	 * Purpose:
+	 * <br>
+	 * buildMatchesTab<br>
+	 * <br>
+	 * @return<br>
+	 */
 	private Component buildMatchesTab()
 	{
 		VerticalLayout root = new VerticalLayout();
 		root.setCaption("Matches");
-		root.setIcon(FontAwesome.COGS);
+		root.setIcon(FontAwesome.GROUP);
 		root.setSpacing(true);
 		root.setMargin(true);
 		// root.setSizeFull()

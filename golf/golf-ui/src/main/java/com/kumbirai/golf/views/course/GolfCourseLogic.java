@@ -160,7 +160,7 @@ public class GolfCourseLogic implements Serializable
 	 */
 	public void saveGolfCourse(GolfCourse golfCourse)
 	{
-		view.showSaveNotification(golfCourse.getCourseName() + " (" + golfCourse.getGolfCourseNo() + ") updated");
+		// view.showSaveNotification(golfCourse.getCourseName() + " (" + golfCourse.getGolfCourseNo() + ") updated")
 		view.clearSelection();
 		view.editGolfCourse(null);
 		view.refreshGolfCourse(golfCourse);
@@ -177,8 +177,7 @@ public class GolfCourseLogic implements Serializable
 	public void deleteGolfCourse(GolfCourse golfCourse)
 	{
 		DataService.get().delete(securityPrincipal, golfCourse);
-		view.showSaveNotification(golfCourse.getCourseName() + " (" + golfCourse.getGolfCourseNo() + ") removed");
-
+		// view.showSaveNotification(golfCourse.getCourseName() + " (" + golfCourse.getGolfCourseNo() + ") removed")
 		view.clearSelection();
 		view.editGolfCourse(null);
 		view.removeGolfCourse(golfCourse);

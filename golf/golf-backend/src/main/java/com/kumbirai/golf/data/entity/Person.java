@@ -7,6 +7,7 @@ import static javax.persistence.GenerationType.TABLE;
 import static javax.persistence.TemporalType.DATE;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -49,13 +50,13 @@ public class Person extends ValueObject implements Serializable, Comparable<Pers
 	@TableGenerator(name = "PersonSeq", allocationSize = 3, initialValue = 1)
 	private Long personNo;
 	@OneToMany(cascade = ALL, fetch = EAGER, mappedBy = "person")
-	private Collection<PersonInfo> personInfoCollection;
+	private Collection<PersonInfo> personInfoCollection = new ArrayList<>();
 	@Enumerated(STRING)
 	@Column(length = 50, nullable = false)
-	private EStatus status;
+	private EStatus status = EStatus.ACTIVE;
 	@Temporal(DATE)
 	@Column(nullable = false)
-	private Date statusDate;
+	private Date statusDate = new Date();
 	@Enumerated(STRING)
 	@Column(length = 20, nullable = false)
 	private ETitle title;
@@ -71,7 +72,7 @@ public class Person extends ValueObject implements Serializable, Comparable<Pers
 	@Lob
 	private byte[] profilePic;
 	@OneToMany(cascade = ALL, mappedBy = "person")
-	private Collection<ScoreCard> scoreCards;
+	private Collection<ScoreCard> scoreCards = new ArrayList<>();
 
 	/**
 	 * Constructor:

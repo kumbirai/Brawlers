@@ -7,6 +7,7 @@ import static javax.persistence.TemporalType.DATE;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -36,27 +37,27 @@ public class GolfEvent extends ValueObject implements Serializable
 	@TableGenerator(name = "EventSeq", allocationSize = 3, initialValue = 1)
 	private Long eventNo;
 	@Temporal(DATE)
-	private Date eventDate;
+	private Date eventDate = new Date();
 	@OneToOne
 	@JoinColumn(name = "golfCourseNo", referencedColumnName = "golfCourseNo")
 	private GolfCourse course;
 	@Column(length = 50)
-	private String teeOff;
+	private String teeOff = "";
 	@Column(length = 250)
-	private String attire;
+	private String attire = "";
 	@Min(value = 0, message = "Can't have negative amount for Green Fees")
-	private BigDecimal greenFees;
+	private BigDecimal greenFees = BigDecimal.ZERO;
 	@Column(length = 250)
-	private String eventSponsor;
-	private Integer availableSlots;
+	private String eventSponsor = "";
+	private Integer availableSlots = 0;
 	@JoinTable(name = "EventConfirmedPlayers", joinColumns = @JoinColumn(name = "eventNo", referencedColumnName = "eventNo"),
 			inverseJoinColumns = @JoinColumn(name = "personNo", referencedColumnName = "personNo"))
 	@OneToMany(fetch = EAGER)
-	private Collection<Person> confirmedPlayers;
+	private Collection<Person> confirmedPlayers = new ArrayList<>();
 	@OneToMany(mappedBy = "golfEvent", fetch = EAGER)
-	private Collection<Match> matches;
+	private Collection<Match> matches = new ArrayList<>();
 	@OneToMany(fetch = EAGER, mappedBy = "golfEvent", cascade = ALL)
-	private Collection<GolfEventResult> golfEventResults;
+	private Collection<GolfEventResult> golfEventResults = new ArrayList<>();
 	@Column(nullable = false)
 	private boolean complete = false;
 	private boolean stableford = true;
