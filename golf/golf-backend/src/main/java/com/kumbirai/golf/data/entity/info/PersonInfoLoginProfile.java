@@ -36,7 +36,7 @@ public class PersonInfoLoginProfile extends PersonInfo implements Serializable
 	@Column(nullable = false, length = 50, unique = true)
 	private String username = "";
 	@Column(nullable = false, length = 50)
-	private String password = "";
+	private String password = new String("");
 	@ManyToMany(fetch = EAGER)
 	@JoinTable(name = "LoginProfileSecurityRole", joinColumns = @JoinColumn(name = "personInfoNo", referencedColumnName = "personInfoNo"),
 			inverseJoinColumns = @JoinColumn(name = "securityRoleNo", referencedColumnName = "securityRoleNo"))

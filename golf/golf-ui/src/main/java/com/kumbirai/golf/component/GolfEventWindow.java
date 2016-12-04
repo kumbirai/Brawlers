@@ -106,7 +106,6 @@ public class GolfEventWindow extends Window
 				LOGGER.error(e, e.getCause());
 				Notification.show("Error while updating event", Type.ERROR_MESSAGE);
 			}
-
 		}
 	}
 
@@ -154,7 +153,7 @@ public class GolfEventWindow extends Window
 		Responsive.makeResponsive(this);
 
 		setModal(true);
-		setCloseShortcut(KeyCode.ESCAPE, null);
+		addCloseShortcut(KeyCode.ESCAPE, null);
 		setResizable(false);
 		setClosable(true);
 		setHeight(90.0f, Unit.PERCENTAGE);
@@ -234,7 +233,7 @@ public class GolfEventWindow extends Window
 	 * @param match
 	 * @return<br>
 	 */
-	private Component getMatchComponent(Match match)
+	private Component getMatchComponent(final Match match)
 	{
 		VerticalLayout layout = new VerticalLayout();
 		for (ScoreCard scoreCard : match.getScoreCards())
@@ -255,7 +254,19 @@ public class GolfEventWindow extends Window
 
 		Button scores = new Button("Scores");
 		scores.addStyleName(ValoTheme.BUTTON_TINY);
-		scores.addClickListener(new OkButtonClickListener());
+		scores.addClickListener(new ClickListener()
+		{
+			/**
+			 * serialVersionUID
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event)
+			{
+				ScoreCardWindow.open(match);
+			}
+		});
 		scores.focus();
 		buttons.addComponent(scores);
 

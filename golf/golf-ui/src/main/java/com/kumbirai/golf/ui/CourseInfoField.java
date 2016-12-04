@@ -1,5 +1,5 @@
 /*
- com.kumbirai.golf.ui.HoleInfoField<br>
+ com.kumbirai.golf.ui.CourseInfoField<br>
 
  Copyright (c) 2016 - Kumbirai 'Coach' Mundangepfupfu (www.kumbirai.com)
 
@@ -30,7 +30,7 @@ import com.vaadin.ui.VerticalLayout;
  * <p><b>Purpose:</b><br>
  * <br>
  *
- * <p><b>Title:</b> HoleInfoField<br>
+ * <p><b>Title:</b> CourseInfoField<br>
  * <b>Description:</b> </p>
  *
  * @author Kumbirai 'Coach' Mundangepfupfu<br>
@@ -40,13 +40,13 @@ import com.vaadin.ui.VerticalLayout;
  * <b>Revision:</b>
  *
  */
-public class HoleInfoField extends CustomField<Collection<HoleInfo>>
+public class CourseInfoField extends CustomField<Collection<HoleInfo>>
 {
 	/**
 	 * serialVersionUID
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final Logger LOGGER = LogManager.getLogger(HoleInfoField.class.getName());
+	private static final Logger LOGGER = LogManager.getLogger(CourseInfoField.class.getName());
 
 	private static final String HOLE_NUMBER = "holeNumber";
 	private static final String MEN_PAR_RATING = "menParRating";
@@ -60,7 +60,7 @@ public class HoleInfoField extends CustomField<Collection<HoleInfo>>
 	/**
 	 * Constructor:
 	 */
-	public HoleInfoField()
+	public CourseInfoField()
 	{
 		super();
 		holeLayout = new VerticalLayout();

@@ -5,8 +5,8 @@
 //$v-font-weight: 300;
 //$v-font-family: "Open Sans", sans-serif;
 // Defines the border used by all components.
-//$v-border: 1px solid (v-shade 0.7);
-//$v-border-radius: 4px;
+$v-border: 1px solid (v-shade 0.7);
+$v-border-radius: 4px;
 // Affects the color of some component elements, e.g Button, Panel title, etc
 //$v-background-color: hsl(210, 0%, 98%);
 // Affects the color of content areas, e.g  Panel and Window content, TextField input etc
@@ -47,6 +47,23 @@ $v-layout-margin-left: $v-layout-margin-top !default;
 $v-layout-spacing-vertical: round($v-unit-size / 1.8) !default;
 $v-layout-spacing-horizontal: round($v-unit-size / 1.8) !default;
 @import "../valo/valo.scss";
+@mixin center-align($position: absolute) {
+  position: $position;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+@mixin vertical-align($position: relative) {
+  position: $position;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
 @mixin golftheme {
   @include valo;
   // login screen - for small screens, see below
@@ -581,6 +598,54 @@ $v-layout-spacing-horizontal: round($v-unit-size / 1.8) !default;
     .ladies-odd {
       background-color: #FFB6E2;
       vertical-align: middle;
+    }
+  }
+  .scorecard-window {
+    width: round(53 * $v-font-size);
+    max-width: 90%;
+    .outline {
+      border: $v-border;
+    }
+    .centeredLabel {
+      @include center-align();
+    }
+    .playerLabel {
+      @include vertical-align();
+    }
+    .holeLabel {
+      @include vertical-align();
+    }
+    .menParLabel {
+      @include vertical-align();
+    }
+    .menStrokeLabel {
+      @include vertical-align();
+    }
+    .ladiesParLabel {
+      @include vertical-align();
+    }
+    .ladiesStrokeLabel {
+      @include vertical-align();
+    }
+    .hole {
+      @include center-align();
+      background-color: green !important;
+    }
+    .menPar {
+      @include center-align();
+      background-color: #6DA8FF !important;
+    }
+    .menStroke {
+      @include center-align();
+      background-color: #B6D3FF !important;
+    }
+    .ladiesPar {
+      @include center-align();
+      background-color: #FF6DC5 !important;
+    }
+    .ladiesStroke {
+      @include center-align();
+      background-color: #FFB6E2 !important;
     }
   }
 }

@@ -66,6 +66,7 @@ public class AddSecurityRoleCmd extends AbstractCommand
 	{
 		super();
 		this.person = person;
+		this.administrator = false;
 	}
 
 	/** (non-Javadoc)
@@ -118,5 +119,13 @@ public class AddSecurityRoleCmd extends AbstractCommand
 		}
 		loginProfile.setSecurityRoles(new ArrayList<>());
 		return loginProfile;
+	}
+
+	/** Getter for the <code>person</code> attribute.<br>
+	 * @return Person - value of the attribute <code>person</code>.
+	 */
+	public Person getPerson()
+	{
+		return this.person;
 	}
 }

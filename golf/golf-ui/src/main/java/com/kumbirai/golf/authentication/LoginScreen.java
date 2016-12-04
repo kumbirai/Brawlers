@@ -517,7 +517,7 @@ public class LoginScreen extends CssLayout
 	{
 		CssLayout loginInformation = new CssLayout();
 		loginInformation.setStyleName("login-information");
-		Label loginInfoText = new Label("<h1>Brawlers Golf</h1>", ContentMode.HTML);
+		Label loginInfoText = new Label("<h1>Golf<strong>Playbook</strong></h1>", ContentMode.HTML);
 		loginInformation.addComponent(loginInfoText);
 		return loginInformation;
 	}

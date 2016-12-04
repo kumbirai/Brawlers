@@ -15,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.JoinColumn;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
 import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
@@ -39,6 +40,7 @@ import com.kumbirai.golf.data.entity.Person;
  */
 @Entity
 @Inheritance(strategy = TABLE_PER_CLASS)
+@MappedSuperclass
 public abstract class PersonInfo extends ValueObject implements Serializable
 {
 	private static final long serialVersionUID = 1L;

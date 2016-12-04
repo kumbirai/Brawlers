@@ -14096,3 +14096,119 @@ div.v-layout.v-horizontal.v-widget {
 	background-color: #FFB6E2;
 	vertical-align: middle;
 }
+
+.golftheme .scorecard-window {
+	width: 795px;
+	max-width: 90%;
+}
+
+.golftheme .scorecard-window .outline {
+	border: 1px solid v-shade 0.7;
+}
+
+.golftheme .scorecard-window .centeredLabel {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+}
+
+.golftheme .scorecard-window .playerLabel {
+	position: relative;
+	top: 50%;
+	-webkit-transform: translateY(-50%);
+	-ms-transform: translateY(-50%);
+	transform: translateY(-50%);
+}
+
+.golftheme .scorecard-window .holeLabel {
+	position: relative;
+	top: 50%;
+	-webkit-transform: translateY(-50%);
+	-ms-transform: translateY(-50%);
+	transform: translateY(-50%);
+}
+
+.golftheme .scorecard-window .menParLabel {
+	position: relative;
+	top: 50%;
+	-webkit-transform: translateY(-50%);
+	-ms-transform: translateY(-50%);
+	transform: translateY(-50%);
+}
+
+.golftheme .scorecard-window .menStrokeLabel {
+	position: relative;
+	top: 50%;
+	-webkit-transform: translateY(-50%);
+	-ms-transform: translateY(-50%);
+	transform: translateY(-50%);
+}
+
+.golftheme .scorecard-window .ladiesParLabel {
+	position: relative;
+	top: 50%;
+	-webkit-transform: translateY(-50%);
+	-ms-transform: translateY(-50%);
+	transform: translateY(-50%);
+}
+
+.golftheme .scorecard-window .ladiesStrokeLabel {
+	position: relative;
+	top: 50%;
+	-webkit-transform: translateY(-50%);
+	-ms-transform: translateY(-50%);
+	transform: translateY(-50%);
+}
+
+.golftheme .scorecard-window .hole {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	background-color: green !important;
+}
+
+.golftheme .scorecard-window .menPar {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	background-color: #6DA8FF !important;
+}
+
+.golftheme .scorecard-window .menStroke {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	background-color: #B6D3FF !important;
+}
+
+.golftheme .scorecard-window .ladiesPar {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	background-color: #FF6DC5 !important;
+}
+
+.golftheme .scorecard-window .ladiesStroke {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	background-color: #FFB6E2 !important;
+}

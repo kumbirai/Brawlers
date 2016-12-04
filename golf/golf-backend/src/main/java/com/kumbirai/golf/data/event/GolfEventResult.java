@@ -8,7 +8,6 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 
-import com.kumbirai.golf.data.ValueObject;
 import com.kumbirai.golf.data.score.ScoreCard;
 
 /**
@@ -18,7 +17,7 @@ import com.kumbirai.golf.data.score.ScoreCard;
 @Entity
 
 @IdClass(GolfEventResultPK.class)
-public class GolfEventResult extends ValueObject implements Serializable
+public class GolfEventResult implements Serializable
 {
 	/**
 	 * serialVersionUID

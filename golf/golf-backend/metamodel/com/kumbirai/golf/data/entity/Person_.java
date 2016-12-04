@@ -1,6 +1,7 @@
 package com.kumbirai.golf.data.entity;
 
 import com.kumbirai.golf.data.EStatus;
+import com.kumbirai.golf.data.ValueObject_;
 import com.kumbirai.golf.data.entity.info.PersonInfo;
 import com.kumbirai.golf.data.score.ScoreCard;
 import java.util.Date;
@@ -9,9 +10,9 @@ import javax.persistence.metamodel.CollectionAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="Dali", date="2016-11-26T12:00:28.095+0200")
+@Generated(value="Dali", date="2016-11-30T19:13:27.054+0200")
 @StaticMetamodel(Person.class)
-public class Person_ {
+public class Person_ extends ValueObject_ {
 	public static volatile SingularAttribute<Person, Long> personNo;
 	public static volatile CollectionAttribute<Person, PersonInfo> personInfoCollection;
 	public static volatile SingularAttribute<Person, EStatus> status;

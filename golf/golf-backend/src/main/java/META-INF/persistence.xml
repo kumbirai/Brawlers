@@ -3,6 +3,7 @@
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 	<persistence-unit name="PU" transaction-type="RESOURCE_LOCAL">
 		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+		<class>com.kumbirai.golf.data.ValueObject</class>
 		<class>com.kumbirai.golf.data.entity.Person</class>
 		<class>com.kumbirai.golf.data.entity.info.PersonInfo</class>
 		<class>com.kumbirai.golf.data.entity.info.PersonInfoEmail</class>

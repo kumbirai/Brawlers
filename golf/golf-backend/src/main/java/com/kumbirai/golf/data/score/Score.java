@@ -13,7 +13,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.TableGenerator;
 
-import com.kumbirai.golf.data.ValueObject;
 import com.kumbirai.golf.data.course.HoleInfo;
 
 /**
@@ -31,7 +30,7 @@ import com.kumbirai.golf.data.course.HoleInfo;
  *
  */
 @Entity
-public class Score extends ValueObject implements Serializable
+public class Score implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 

@@ -24,8 +24,8 @@ import com.kumbirai.golf.data.entity.info.PersonInfoTel;
 import com.kumbirai.golf.data.entity.info.PersonInfoWebAddress;
 import com.kumbirai.golf.event.DashboardEvent.CloseOpenWindowsEvent;
 import com.kumbirai.golf.event.DashboardEvent.ProfileUpdatedEvent;
-import com.kumbirai.golf.ui.NumberField;
 import com.kumbirai.golf.event.DashboardEventBus;
+import com.kumbirai.golf.ui.NumberField;
 import com.kumbirai.security.principal.ISecurityPrincipal;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitEvent;
@@ -198,7 +198,7 @@ public class ProfilePreferencesWindow extends Window
 		Responsive.makeResponsive(this);
 
 		setModal(true);
-		setCloseShortcut(KeyCode.ESCAPE, null);
+		addCloseShortcut(KeyCode.ESCAPE, null);
 		setResizable(false);
 		setClosable(true);
 		setHeight(90.0f, Unit.PERCENTAGE);

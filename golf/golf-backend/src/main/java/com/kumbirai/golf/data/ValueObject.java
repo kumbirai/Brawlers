@@ -12,6 +12,7 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 
 import com.kumbirai.data.IValueObject;
@@ -30,6 +31,7 @@ import com.kumbirai.data.IValueObject;
  * <b>Revision:</b>
  *
  */
+@MappedSuperclass
 public abstract class ValueObject implements IValueObject
 {
 	/**

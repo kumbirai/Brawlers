@@ -12,8 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.TableGenerator;
 
-import com.kumbirai.golf.data.ValueObject;
-
 /**
  * <p><b>Purpose:</b><br>
  * <br>
@@ -29,7 +27,7 @@ import com.kumbirai.golf.data.ValueObject;
  *
  */
 @Entity
-public class HoleInfo extends ValueObject implements Serializable
+public class HoleInfo implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 

@@ -116,7 +116,7 @@ public class Menu extends CssLayout
 	 */
 	private Component buildTitle()
 	{
-		Label logo = new Label("Brawlers <strong>Dashboard</strong>", ContentMode.HTML);
+		Label logo = new Label("Golf<strong>Playbook</strong>", ContentMode.HTML);
 		logo.setSizeUndefined();
 		HorizontalLayout logoWrapper = new HorizontalLayout(logo);
 		logoWrapper.setComponentAlignment(logo, Alignment.MIDDLE_CENTER);
