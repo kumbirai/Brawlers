@@ -7,7 +7,7 @@ import javax.persistence.metamodel.CollectionAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="Dali", date="2016-11-30T19:13:27.084+0200")
+@Generated(value="Dali", date="2016-12-14T22:22:28.356+0200")
 @StaticMetamodel(ScoreCard.class)
 public class ScoreCard_ extends ValueObject_ {
 	public static volatile SingularAttribute<ScoreCard, Long> scoreCardNo;

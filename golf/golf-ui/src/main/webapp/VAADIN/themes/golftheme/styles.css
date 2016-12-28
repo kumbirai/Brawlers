@@ -999,7 +999,7 @@
  */
 
 .v-vaadin-version:after {
-	content: "7.7.5";
+	content: "7.7.6";
 }
 
 .v-widget {
@@ -14097,118 +14097,65 @@ div.v-layout.v-horizontal.v-widget {
 	vertical-align: middle;
 }
 
-.golftheme .scorecard-window {
-	width: 795px;
-	max-width: 90%;
-}
-
 .golftheme .scorecard-window .outline {
 	border: 1px solid v-shade 0.7;
 }
 
-.golftheme .scorecard-window .centeredLabel {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	-webkit-transform: translate(-50%, -50%);
-	-ms-transform: translate(-50%, -50%);
-	transform: translate(-50%, -50%);
+.golftheme .v-table-scorecard {
+	width: auto;
 }
 
-.golftheme .scorecard-window .playerLabel {
-	position: relative;
-	top: 50%;
-	-webkit-transform: translateY(-50%);
-	-ms-transform: translateY(-50%);
-	transform: translateY(-50%);
+.golftheme .v-table-scorecard .pointsLabel {
+	background-color: silver !important;
+	text-align: right !important;
 }
 
-.golftheme .scorecard-window .holeLabel {
-	position: relative;
-	top: 50%;
-	-webkit-transform: translateY(-50%);
-	-ms-transform: translateY(-50%);
-	transform: translateY(-50%);
+.golftheme .v-table-scorecard .v-table-cell-content-header {
+	text-align: right !important;
+	font-weight: bold;
+	font-variant: small-caps;
 }
 
-.golftheme .scorecard-window .menParLabel {
-	position: relative;
-	top: 50%;
-	-webkit-transform: translateY(-50%);
-	-ms-transform: translateY(-50%);
-	transform: translateY(-50%);
-}
-
-.golftheme .scorecard-window .menStrokeLabel {
-	position: relative;
-	top: 50%;
-	-webkit-transform: translateY(-50%);
-	-ms-transform: translateY(-50%);
-	transform: translateY(-50%);
-}
-
-.golftheme .scorecard-window .ladiesParLabel {
-	position: relative;
-	top: 50%;
-	-webkit-transform: translateY(-50%);
-	-ms-transform: translateY(-50%);
-	transform: translateY(-50%);
-}
-
-.golftheme .scorecard-window .ladiesStrokeLabel {
-	position: relative;
-	top: 50%;
-	-webkit-transform: translateY(-50%);
-	-ms-transform: translateY(-50%);
-	transform: translateY(-50%);
-}
-
-.golftheme .scorecard-window .hole {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	-webkit-transform: translate(-50%, -50%);
-	-ms-transform: translate(-50%, -50%);
-	transform: translate(-50%, -50%);
+.golftheme .v-table-scorecard .v-table-cell-content-hole {
+	text-align: center;
+	vertical-align: middle;
+	width: 30px;
 	background-color: green !important;
+	color: white;
 }
 
-.golftheme .scorecard-window .menPar {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	-webkit-transform: translate(-50%, -50%);
-	-ms-transform: translate(-50%, -50%);
-	transform: translate(-50%, -50%);
+.golftheme .v-table-scorecard .v-table-cell-content-menPar {
+	text-align: center;
+	vertical-align: middle;
+	width: 30px;
 	background-color: #6DA8FF !important;
 }
 
-.golftheme .scorecard-window .menStroke {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	-webkit-transform: translate(-50%, -50%);
-	-ms-transform: translate(-50%, -50%);
-	transform: translate(-50%, -50%);
+.golftheme .v-table-scorecard .v-table-cell-content-menStroke {
+	text-align: center;
+	vertical-align: middle;
+	width: 30px;
 	background-color: #B6D3FF !important;
 }
 
-.golftheme .scorecard-window .ladiesPar {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	-webkit-transform: translate(-50%, -50%);
-	-ms-transform: translate(-50%, -50%);
-	transform: translate(-50%, -50%);
+.golftheme .v-table-scorecard .v-table-cell-content-ladiesPar {
+	text-align: center;
+	vertical-align: middle;
+	width: 30px;
 	background-color: #FF6DC5 !important;
 }
 
-.golftheme .scorecard-window .ladiesStroke {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	-webkit-transform: translate(-50%, -50%);
-	-ms-transform: translate(-50%, -50%);
-	transform: translate(-50%, -50%);
+.golftheme .v-table-scorecard .v-table-cell-content-ladiesStroke {
+	text-align: center;
+	vertical-align: middle;
+	width: 30px;
 	background-color: #FFB6E2 !important;
+}
+
+.golftheme .v-table-scorecard .v-table-cell-content-name {
+	width: 120px;
+}
+
+.golftheme .v-table-scorecard .v-table-cell-content-standardPoints {
+	background-color: silver !important;
 }

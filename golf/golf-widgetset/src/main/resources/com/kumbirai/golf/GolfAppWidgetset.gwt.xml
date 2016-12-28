@@ -5,4 +5,6 @@
     <inherits name="com.vaadin.DefaultWidgetSet"/>
     
     <stylesheet src="resetbuttonfortextfield/styles.css"/>
+
+    <inherits name="org.vaadin.virkki.carousel.CarouselWidgetSet" />
 </module>

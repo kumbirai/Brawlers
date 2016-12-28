@@ -13,8 +13,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.SubscriberExceptionContext;
-import com.google.common.eventbus.SubscriberExceptionHandler;
 import com.kumbirai.golf.GolfUI;
 
 /**
@@ -31,7 +29,7 @@ import com.kumbirai.golf.GolfUI;
  * <b>Revision:</b>
  *
  */
-public class DashboardEventBus implements SubscriberExceptionHandler, Serializable
+public class DashboardEventBus implements Serializable
 {
 	/**
 	 * serialVersionUID
@@ -40,7 +38,7 @@ public class DashboardEventBus implements SubscriberExceptionHandler, Serializab
 
 	private static final Logger LOGGER = LogManager.getLogger(DashboardEventBus.class.getName());
 
-	private final transient EventBus eventBus = new EventBus(this);
+	private final transient EventBus eventBus = new EventBus("golf-ui");
 
 	/**
 	 * Purpose:
@@ -77,14 +75,5 @@ public class DashboardEventBus implements SubscriberExceptionHandler, Serializab
 	public static void unregister(final Object object)
 	{
 		GolfUI.getDashboardEventbus().eventBus.unregister(object);
-	}
-
-	/** (non-Javadoc)
-	 * @see com.google.common.eventbus.SubscriberExceptionHandler#handleException(java.lang.Throwable, com.google.common.eventbus.SubscriberExceptionContext)
-	 */
-	@Override
-	public void handleException(Throwable exception, SubscriberExceptionContext context)
-	{
-		LOGGER.error(exception);
 	}
 }

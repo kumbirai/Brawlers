@@ -7,6 +7,7 @@
  */
 package com.kumbirai.golf.component;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -19,16 +20,21 @@ import com.kumbirai.golf.data.course.HoleInfo;
 import com.kumbirai.golf.data.score.Match;
 import com.kumbirai.golf.data.score.Score;
 import com.kumbirai.golf.data.score.ScoreCard;
+import com.vaadin.data.Item;
+import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.server.Responsive;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Table;
+import com.vaadin.ui.Table.ColumnGenerator;
 import com.vaadin.ui.Table.ColumnHeaderMode;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
@@ -70,8 +76,6 @@ public class ScoreCardWindow extends Window
 	 */
 	private static final long serialVersionUID = 1L;
 	private static final Logger LOGGER = LogManager.getLogger(ScoreCardWindow.class.getName());
-	private static final String CENTERED_LABEL = "centeredLabel";
-	private static final String OUTLINE = "outline";
 	public static final String ID = "scorecardwindow";
 	private BeanItemContainer<ScorecardLine> container;
 
@@ -86,9 +90,10 @@ public class ScoreCardWindow extends Window
 		setResizable(false);
 		setClosable(true);
 		setHeight(90.0f, Unit.PERCENTAGE);
+		setWidth(780.0f, Unit.PIXELS);
 
 		VerticalLayout content = new VerticalLayout();
-		content.setSizeFull();
+		// content.setHeight(100.0f, Unit.PERCENTAGE)
 		content.setMargin(new MarginInfo(true, false, false, false));
 		setContent(content);
 
@@ -109,20 +114,19 @@ public class ScoreCardWindow extends Window
 	private Component buildScoreCard(Match match)
 	{
 		VerticalLayout content = new VerticalLayout();
+		// content.setHeight(100.0f, Unit.PERCENTAGE)
+
 		Label lblEventDetails = new Label(getEventDetails(match));
 		lblEventDetails.addStyleName(ValoTheme.LABEL_H1);
 		content.addComponent(lblEventDetails);
 
 		Table scoreCard = createScoreCardTable();
 		content.addComponent(scoreCard);
+		// content.setExpandRatio(scoreCard, 1f)
 
-		// scoreCard.setMargin(false);
-		// scoreCard.setSpacing(false);
-		scoreCard.setWidth(100, Unit.PERCENTAGE);
+		addScoreCardHeadings(match);
 
-		addScoreCardHeadings(match, scoreCard);
-
-		addScoreCards(match, scoreCard);
+		addScoreCards(match);
 
 		return content;
 	}
@@ -136,12 +140,103 @@ public class ScoreCardWindow extends Window
 	 */
 	private Table createScoreCardTable()
 	{
-		Table table = new Table();
-		table.setImmediate(true);
-		table.setColumnHeaderMode(ColumnHeaderMode.HIDDEN);
-
 		container = new BeanItemContainer<>(ScorecardLine.class);
-		table.setContainerDataSource(container);
+		Table table = new Table(null, container);
+		table.setColumnHeaderMode(ColumnHeaderMode.HIDDEN);
+		table.setVisibleColumns("name", "handicap", "hole1", "hole2", "hole3", "hole4", "hole5", "hole6", "hole7", "hole8", "hole9", "hole10", "hole11",
+				"hole12", "hole13", "hole14", "hole15", "hole16", "hole17", "hole18", "totalStrokes", "netStrokes", "standardPoints");
+		table.setImmediate(true);
+		table.setSortEnabled(false);
+		table.setPageLength(10);
+
+		table.addStyleName("scorecard");
+		table.setWidth(100.0f, Unit.PERCENTAGE);
+		table.setColumnWidth("handicap", 50);
+
+		for (int i = 1; i <= 18; i++)
+		{
+			String fieldName = String.format("hole%s", i);
+			table.setColumnWidth(fieldName, 40);
+			table.addGeneratedColumn(fieldName, new ColumnGenerator()
+			{
+				/**
+				* serialVersionUID
+				*/
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public Object generateCell(Table source, final Object itemId, Object columnId)
+				{
+					Item row = source.getItem(itemId);
+					Property<?> item = row.getItemProperty(fieldName);
+					Object value = item.getValue();
+					if (value != null)
+					{
+						Class<?> clazz = value.getClass();
+						Label lbl = new Label(value.toString());
+						if (clazz == Integer.class)
+						{
+							lbl.addStyleName(ValoTheme.LABEL_SMALL);
+							return lbl;
+						}
+						else if (clazz == String.class)
+						{
+							lbl.addStyleName(ValoTheme.LABEL_TINY);
+							return lbl;
+						}
+						else if (clazz == Score.class)
+						{
+							return buildScore((Score) value);
+						}
+					}
+					return null;
+				}
+			});
+		}
+		table.setCellStyleGenerator(new Table.CellStyleGenerator()
+		{
+			/**
+			 * serialVersionUID
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public String getStyle(Table source, Object itemId, Object propertyId)
+			{
+				Item row = source.getItem(itemId);
+				Property<?> styleProp = row.getItemProperty("style");
+				String styleValue = (String) styleProp.getValue();
+				String propertyValue = propertyId != null ? (String) propertyId : "";
+				boolean header = "name".equalsIgnoreCase(propertyValue) || "handicap".equalsIgnoreCase(propertyValue);
+				if ("person".equalsIgnoreCase(styleValue) && propertyId != null)
+				{
+					return header ? "name" : isStyledProperty(propertyValue.toUpperCase()) ? propertyValue : null;
+				}
+				if (!"person".equalsIgnoreCase(styleValue) && propertyId != null && header)
+				{
+					return "header";
+				}
+				if (styleValue != null)
+					return styleValue;
+
+				return null;
+			}
+
+			/**
+			 * Purpose:
+			 * <br>
+			 * isStyledProperty<br>
+			 * <br>
+			 * @param propertyValue
+			 * @return<br>
+			 */
+			private boolean isStyledProperty(String propertyValue)
+			{
+				String[] propertyValues = new String[]
+				{ "standardPoints".toUpperCase() };
+				return Arrays.asList(propertyValues).contains(propertyValue);
+			}
+		});
 		return table;
 	}
 
@@ -167,90 +262,89 @@ public class ScoreCardWindow extends Window
 	 * @param match
 	 * @param scoreCard<br>
 	 */
-	private void addScoreCardHeadings(Match match, Table scoreCard)
+	private void addScoreCardHeadings(Match match)
 	{
-		// Label hole = new Label("Hole");
-		// hole.addStyleName(ValoTheme.LABEL_COLORED);
-		// hole.addStyleName("holeLabel");
-		// hole.addStyleName("outlined");
-		// hole.setWidth(100, Unit.PIXELS);
-		// scoreCard.addComponent(hole, 0, 0);
-		// // scoreCard.setComponentAlignment(hole, Alignment.MIDDLE_RIGHT)
-		//
-		// Label menPar = new Label("Men's Par");
-		// menPar.addStyleName(ValoTheme.LABEL_COLORED);
-		// menPar.addStyleName("menParLabel");
-		// scoreCard.addComponent(menPar, 0, 1);
-		// // scoreCard.setComponentAlignment(menPar, Alignment.MIDDLE_RIGHT)
-		//
-		// Label menStroke = new Label("Men's Handicap");
-		// menStroke.addStyleName(ValoTheme.LABEL_COLORED);
-		// menStroke.addStyleName("menStrokeLabel");
-		// scoreCard.addComponent(menStroke, 0, 2);
-		// // scoreCard.setComponentAlignment(menStroke, Alignment.MIDDLE_RIGHT)
-		//
-		// Label ladiesPar = new Label("Ladies' Par");
-		// ladiesPar.addStyleName(ValoTheme.LABEL_COLORED);
-		// ladiesPar.addStyleName("ladiesParLabel");
-		// scoreCard.addComponent(ladiesPar, 0, 3);
-		// // scoreCard.setComponentAlignment(ladiesPar, Alignment.MIDDLE_RIGHT)
-		//
-		// Label ladiesStroke = new Label("Ladies' Handicap");
-		// ladiesStroke.addStyleName(ValoTheme.LABEL_COLORED);
-		// ladiesStroke.addStyleName("ladiesStrokeLabel");
-		// ladiesStroke.setWidth(120, Unit.PIXELS);
-		// scoreCard.addComponent(ladiesStroke, 0, 4);
-		// // scoreCard.setComponentAlignment(ladiesStroke, Alignment.MIDDLE_RIGHT)
-		//
-		// Label total = new Label("Total");
-		// total.addStyleName(ValoTheme.LABEL_COLORED);
-		// total.addStyleName("holeLabel");
-		// scoreCard.addComponent(total, 20, 0);
-		// // scoreCard.setComponentAlignment(ladiesStroke, Alignment.MIDDLE_RIGHT)
-
 		Integer[][] courseInfo = getCourseInfo(match);
+		ScorecardLine hole = new ScorecardLine("hole");
+		hole.setName("Hole");
+		ScorecardLine menPar = new ScorecardLine("menPar");
+		menPar.setName("Men's Par");
+		ScorecardLine menStroke = new ScorecardLine("menStroke");
+		menStroke.setName("Men's Handicap");
+		ScorecardLine ladiesPar = new ScorecardLine("ladiesPar");
+		ladiesPar.setName("Ladies' Par");
+		ScorecardLine ladiesStroke = new ScorecardLine("ladiesStroke");
+		ladiesStroke.setName("Ladies' Handicap");
 
 		int holeNum = 1;
-		int idx = 0;
-		for (int i = 2; i <= 19; i++)
+		for (int i = 0; i < 18; i++)
 		{
-			Integer[] info = courseInfo[idx++];
-			LOGGER.debug(String.format("[%s]info-%s", idx, Arrays.asList(info)));
-
-			Label lblHoleNo = new Label(String.valueOf(holeNum++));
-			lblHoleNo.addStyleName(ValoTheme.LABEL_COLORED);
-			lblHoleNo.addStyleName("hole");
-			lblHoleNo.addStyleName(OUTLINE);
-			// scoreCard.addComponent(lblHoleNo, i, 0);
-			// scoreCard.setComponentAlignment(lblHoleNo, Alignment.MIDDLE_CENTER);
-
-			Label lblMenParRating = new Label(String.valueOf(info[0]));
-			lblMenParRating.addStyleName(ValoTheme.LABEL_SMALL);
-			lblMenParRating.addStyleName("menPar");
-			lblMenParRating.addStyleName(OUTLINE);
-			// scoreCard.addComponent(lblMenParRating, i, 1);
-			// scoreCard.setComponentAlignment(lblMenParRating, Alignment.MIDDLE_CENTER);
-
-			Label lblMenStrokeRating = new Label(String.valueOf(info[1]));
-			lblMenStrokeRating.addStyleName(ValoTheme.LABEL_SMALL);
-			lblMenStrokeRating.addStyleName("menStroke");
-			lblMenStrokeRating.addStyleName(OUTLINE);
-			// scoreCard.addComponent(lblMenStrokeRating, i, 2);
-			// scoreCard.setComponentAlignment(lblMenStrokeRating, Alignment.MIDDLE_CENTER);
-
-			Label lblLadiesParRating = new Label(String.valueOf(info[2]));
-			lblLadiesParRating.addStyleName(ValoTheme.LABEL_SMALL);
-			lblLadiesParRating.addStyleName("ladiesPar");
-			lblLadiesParRating.addStyleName(OUTLINE);
-			// scoreCard.addComponent(lblLadiesParRating, i, 3);
-			// scoreCard.setComponentAlignment(lblLadiesParRating, Alignment.MIDDLE_CENTER);
-
-			Label lblLadiesStrokeRating = new Label(String.valueOf(info[3]));
-			lblLadiesStrokeRating.addStyleName(ValoTheme.LABEL_SMALL);
-			lblLadiesStrokeRating.addStyleName("ladiesStroke");
-			lblLadiesStrokeRating.addStyleName(OUTLINE);
-			// scoreCard.addComponent(lblLadiesStrokeRating, i, 4);
-			// scoreCard.setComponentAlignment(lblLadiesStrokeRating, Alignment.MIDDLE_CENTER);
+			Integer[] info = courseInfo[i];
+			try
+			{
+				String fieldName = String.format("hole%s", holeNum);
+				//
+				Class<?> holeClass = hole.getClass();
+				Field holeField = holeClass.getDeclaredField(fieldName);
+				holeField.setAccessible(true);
+				holeField.set(hole, Integer.valueOf(holeNum));
+				//
+				Class<?> menParClass = menPar.getClass();
+				Field menParField = menParClass.getDeclaredField(fieldName);
+				menParField.setAccessible(true);
+				menParField.set(menPar, Integer.valueOf(info[0]));
+				//
+				Class<?> menStrokeClass = menStroke.getClass();
+				Field menStrokeField = menStrokeClass.getDeclaredField(fieldName);
+				menStrokeField.setAccessible(true);
+				menStrokeField.set(menStroke, Integer.valueOf(info[1]));
+				//
+				Class<?> ladiesParClass = ladiesPar.getClass();
+				Field ladiesParField = ladiesParClass.getDeclaredField(fieldName);
+				ladiesParField.setAccessible(true);
+				ladiesParField.set(ladiesPar, Integer.valueOf(info[2]));
+				//
+				Class<?> ladiesStrokeClass = ladiesStroke.getClass();
+				Field ladiesStrokeField = ladiesStrokeClass.getDeclaredField(fieldName);
+				ladiesStrokeField.setAccessible(true);
+				ladiesStrokeField.set(ladiesStroke, Integer.valueOf(info[3]));
+			}
+			catch (NoSuchFieldException ex)
+			{
+				LOGGER.error("[NoSuchFieldException] has been caught.", ex);
+			}
+			catch (SecurityException ex)
+			{
+				LOGGER.error("[SecurityException] has been caught.", ex);
+			}
+			catch (IllegalArgumentException ex)
+			{
+				LOGGER.error("[IllegalArgumentException] has been caught.", ex);
+			}
+			catch (IllegalAccessException ex)
+			{
+				LOGGER.error("[IllegalAccessException] has been caught.", ex);
+			}
+			holeNum++;
+		}
+		container.addBean(hole);
+		container.addBean(menPar);
+		container.addBean(menStroke);
+		container.addBean(ladiesPar);
+		container.addBean(ladiesStroke);
+		ScorecardLine blank = new ScorecardLine("blank");
+		blank.setTotalStrokes("Grs");
+		blank.setNetStrokes("Net");
+		blank.setStandardPoints("Pts");
+		container.addBean(blank);
+		if (LOGGER.isDebugEnabled())
+		{
+			int idx = 0;
+			for (int i = 0; i < container.size(); i++)
+			{
+				ScorecardLine bean = container.getIdByIndex(idx++);
+				LOGGER.debug(String.format("%s", bean));
+			}
 		}
 	}
 
@@ -284,44 +378,16 @@ public class ScoreCardWindow extends Window
 	 * @param match
 	 * @param scoreCard<br>
 	 */
-	private void addScoreCards(Match match, Table scoreCard)
+	private void addScoreCards(Match match)
 	{
 		List<ScoreCard> scoreCards = new ArrayList<>(match.getScoreCards());
 		scoreCards.sort((ScoreCard o1, ScoreCard o2) -> o1.getLineNumber().compareTo(o2.getLineNumber()));
-		int lineNumber = 5;
 		for (ScoreCard card : scoreCards)
 		{
-			addPlayer(lineNumber, card, scoreCard);
-			addScores(lineNumber, card, scoreCard);
-			lineNumber++;
+			ScorecardLine scoreCardLine = new ScorecardLine("person");
+			addScores(card, scoreCardLine);
+			container.addBean(scoreCardLine);
 		}
-	}
-
-	/**
-	 * Purpose:
-	 * <br>
-	 * addPlayer<br>
-	 * <br>
-	 * @param lineNumber
-	 * @param card
-	 * @param scoreCard<br>
-	 */
-	private void addPlayer(int lineNumber, ScoreCard card, Table scoreCard)
-	{
-		Label lblPlayer = new Label(card.getPerson().getName());
-		lblPlayer.addStyleName(ValoTheme.LABEL_SMALL);
-		lblPlayer.addStyleName("playerLabel");
-		lblPlayer.addStyleName(OUTLINE);
-		lblPlayer.setWidth(175, Unit.PIXELS);
-		// scoreCard.addComponent(lblPlayer, 0, lineNumber);
-		// scoreCard.setComponentAlignment(lblPlayer, Alignment.MIDDLE_LEFT);
-
-		Label lblHandicap = new Label(String.valueOf(card.getHandicap()));
-		lblHandicap.addStyleName(ValoTheme.LABEL_SMALL);
-		lblHandicap.addStyleName(CENTERED_LABEL);
-		lblHandicap.addStyleName(OUTLINE);
-		// scoreCard.addComponent(lblHandicap, 1, lineNumber);
-		// scoreCard.setComponentAlignment(lblHandicap, Alignment.MIDDLE_CENTER);
 	}
 
 	/**
@@ -329,45 +395,90 @@ public class ScoreCardWindow extends Window
 	 * <br>
 	 * addScores<br>
 	 * <br>
-	 * @param lineNumber
 	 * @param card
 	 * @param scoreCard<br>
 	 */
-	private void addScores(int lineNumber, ScoreCard card, Table scoreCard)
+	private void addScores(ScoreCard card, ScorecardLine scoreCard)
 	{
+		scoreCard.setName(card.getPerson().getName());
+		scoreCard.setHandicap(card.getHandicap());
 		List<Score> scores = new ArrayList<>(card.getScores());
 		scores.sort((Score o1, Score o2) -> o1.getHoleNumber().compareTo(o2.getHoleNumber()));
 		int idx = 0;
-		for (int i = 2; i <= 19; i++)
+		Class<?> scoreCardClass = scoreCard.getClass();
+		try
 		{
-			Score score = scores.get(idx++);
-			Label lblScore = new Label(String.valueOf(score.getStrokes()));
-			lblScore.addStyleName(ValoTheme.LABEL_SMALL);
-			lblScore.addStyleName(CENTERED_LABEL);
-			lblScore.addStyleName(OUTLINE);
-			// scoreCard.addComponent(lblScore, i, lineNumber);
-			// scoreCard.setComponentAlignment(lblScore, Alignment.MIDDLE_CENTER);
+			for (int i = 1; i <= 18; i++)
+			{
+				Score score = scores.get(idx++);
+				String fieldName = String.format("hole%s", i);
+				//
+				Field holeField = scoreCardClass.getDeclaredField(fieldName);
+				holeField.setAccessible(true);
+				holeField.set(scoreCard, score);
+			}
 		}
-		Label lblTotal = new Label(String.valueOf(card.getTotalStrokes()));
-		lblTotal.addStyleName(ValoTheme.LABEL_SMALL);
-		lblTotal.addStyleName(CENTERED_LABEL);
-		lblTotal.addStyleName(OUTLINE);
-		// scoreCard.addComponent(lblTotal, 20, lineNumber);
-		// scoreCard.setComponentAlignment(lblTotal, Alignment.MIDDLE_CENTER);
+		catch (NoSuchFieldException ex)
+		{
+			LOGGER.error("[NoSuchFieldException] has been caught.", ex);
+		}
+		catch (SecurityException ex)
+		{
+			LOGGER.error("[SecurityException] has been caught.", ex);
+		}
+		catch (IllegalArgumentException ex)
+		{
+			LOGGER.error("[IllegalArgumentException] has been caught.", ex);
+		}
+		catch (IllegalAccessException ex)
+		{
+			LOGGER.error("[IllegalAccessException] has been caught.", ex);
+		}
+		scoreCard.setTotalStrokes(card.getTotalStrokes());
+		scoreCard.setNetStrokes(card.getNetStrokes());
+		scoreCard.setStandardPoints(card.getStandardPoints());
+	}
 
-		Label lblNet = new Label(String.valueOf(card.getNetStrokes()));
-		lblNet.addStyleName(ValoTheme.LABEL_SMALL);
-		lblNet.addStyleName(CENTERED_LABEL);
-		lblNet.addStyleName(OUTLINE);
-		// scoreCard.addComponent(lblNet, 21, lineNumber);
-		// scoreCard.setComponentAlignment(lblNet, Alignment.MIDDLE_CENTER);
+	/**
+	 * Purpose:
+	 * <br>
+	 * buildScore<br>
+	 * <br>
+	 * @param score
+	 * @return<br>
+	 */
+	private Component buildScore(Score score)
+	{
+		VerticalLayout scoreLayout = new VerticalLayout();
+		Button btnStrokes = new Button(String.valueOf(score.getStrokes()));
+		btnStrokes.addClickListener(new ClickListener()
+		{
+			/**
+			 * serialVersionUID
+			 */
+			private static final long serialVersionUID = 1L;
 
-		Label lblPoints = new Label(String.valueOf(card.getStandardPoints()));
-		lblPoints.addStyleName(ValoTheme.LABEL_SMALL);
-		lblPoints.addStyleName(CENTERED_LABEL);
-		lblPoints.addStyleName(OUTLINE);
-		// scoreCard.addComponent(lblPoints, 22, lineNumber);
-		// scoreCard.setComponentAlignment(lblPoints, Alignment.MIDDLE_CENTER);
+			/** (non-Javadoc)
+			 * @see com.vaadin.ui.Button.ClickListener#buttonClick(com.vaadin.ui.Button.ClickEvent)
+			 */
+			@Override
+			public void buttonClick(ClickEvent event)
+			{
+				ScoreWindow.open(score.getScoreCard().getMatchUp(), score.getHoleNumber() - 1);
+			}
+		});
+		btnStrokes.setDescription("Click to edit scores");
+		btnStrokes.addStyleName(ValoTheme.BUTTON_LINK);
+		btnStrokes.addStyleName(ValoTheme.BUTTON_SMALL);
+		scoreLayout.addComponent(btnStrokes);
+
+		HorizontalLayout pointsLayout = new HorizontalLayout();
+		Label lblEdit = new Label(String.valueOf(score.getIpsResult().getStandardPoints()));
+		lblEdit.addStyleName(ValoTheme.LABEL_SMALL);
+		pointsLayout.addComponent(lblEdit);
+
+		scoreLayout.addComponent(pointsLayout);
+		return scoreLayout;
 	}
 
 	/**
@@ -404,46 +515,5 @@ public class ScoreCardWindow extends Window
 		Window w = new ScoreCardWindow(match);
 		UI.getCurrent().addWindow(w);
 		w.focus();
-	}
-
-	/**
-	 * <p><b>Purpose:</b><br>
-	 * <br>
-	 *
-	 * <p><b>Title:</b> ScorecardLine<br>
-	 * <b>Description:</b> </p>
-	 *
-	 * @author Kumbirai 'Coach' Mundangepfupfu<br>
-	 * @date 04 Dec 2016<br>
-	 * @version 1.0<br>
-	 *
-	 * <b>Revision:</b>
-	 *
-	 */
-	private class ScorecardLine
-	{
-		public String name;
-		public Integer handicap;
-		public Object hole01;
-		public Object hole02;
-		public Object hole03;
-		public Object hole04;
-		public Object hole05;
-		public Object hole06;
-		public Object hole07;
-		public Object hole08;
-		public Object hole09;
-		public Object hole10;
-		public Object hole11;
-		public Object hole12;
-		public Object hole13;
-		public Object hole14;
-		public Object hole15;
-		public Object hole16;
-		public Object hole17;
-		public Object hole18;
-		public Integer totalStrokes;
-		public Integer netStrokes;
-		public Integer standardPoints;
 	}
 }

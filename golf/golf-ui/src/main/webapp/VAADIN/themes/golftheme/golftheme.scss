@@ -54,6 +54,10 @@ $v-layout-spacing-horizontal: round($v-unit-size / 1.8) !default;
   -webkit-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
+  text-align: center;
+  vertical-align: middle;
+  width: 40px;
+  height: 28px;
 }
 
 @mixin vertical-align($position: relative) {
@@ -62,6 +66,12 @@ $v-layout-spacing-horizontal: round($v-unit-size / 1.8) !default;
   -webkit-transform: translateY(-50%);
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
+}
+
+@mixin scorecard-header {
+  text-align: center;
+  vertical-align: middle;
+  width: 30px;
 }
 
 @mixin golftheme {
@@ -601,51 +611,47 @@ $v-layout-spacing-horizontal: round($v-unit-size / 1.8) !default;
     }
   }
   .scorecard-window {
-    width: round(53 * $v-font-size);
-    max-width: 90%;
     .outline {
       border: $v-border;
     }
-    .centeredLabel {
-      @include center-align();
+  }
+  .v-table-scorecard {
+    width: auto;
+    .pointsLabel {
+      background-color: silver !important;
+      text-align: right !important;
     }
-    .playerLabel {
-      @include vertical-align();
+    .v-table-cell-content-header {
+      text-align: right !important;
+      font-weight: bold;
+      font-variant: small-caps;
     }
-    .holeLabel {
-      @include vertical-align();
-    }
-    .menParLabel {
-      @include vertical-align();
-    }
-    .menStrokeLabel {
-      @include vertical-align();
-    }
-    .ladiesParLabel {
-      @include vertical-align();
-    }
-    .ladiesStrokeLabel {
-      @include vertical-align();
-    }
-    .hole {
-      @include center-align();
+    .v-table-cell-content-hole {
+      @include scorecard-header();
       background-color: green !important;
+      color: white;
     }
-    .menPar {
-      @include center-align();
+    .v-table-cell-content-menPar {
+      @include scorecard-header();
       background-color: #6DA8FF !important;
     }
-    .menStroke {
-      @include center-align();
+    .v-table-cell-content-menStroke {
+      @include scorecard-header();
       background-color: #B6D3FF !important;
     }
-    .ladiesPar {
-      @include center-align();
+    .v-table-cell-content-ladiesPar {
+      @include scorecard-header();
       background-color: #FF6DC5 !important;
     }
-    .ladiesStroke {
-      @include center-align();
+    .v-table-cell-content-ladiesStroke {
+      @include scorecard-header();
       background-color: #FFB6E2 !important;
+    }
+    .v-table-cell-content-name {
+      width: 120px;
+    }
+    .v-table-cell-content-standardPoints {
+      background-color: silver !important;
     }
   }
 }

@@ -6,11 +6,9 @@
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-
 	<artifactId>golf-backend</artifactId>
 	<name>golf-backend</name>
 	<packaging>jar</packaging>
-
 	<dependencies>
 		<dependency>
 			<groupId>javax.validation</groupId>
@@ -73,8 +71,5 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
-	<build>
-	</build>
-
+	<build/>
 </project>
