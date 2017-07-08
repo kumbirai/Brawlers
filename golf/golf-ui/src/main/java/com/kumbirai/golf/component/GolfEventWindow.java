@@ -7,7 +7,9 @@
  */
 package com.kumbirai.golf.component;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,6 +22,8 @@ import com.kumbirai.golf.event.DashboardEvent.CloseOpenWindowsEvent;
 import com.kumbirai.golf.event.DashboardEvent.EventUpdatedEvent;
 import com.kumbirai.golf.event.DashboardEventBus;
 import com.kumbirai.security.principal.ISecurityPrincipal;
+import com.vaadin.data.Item;
+import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitEvent;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
@@ -43,6 +47,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.TabSheet;
+import com.vaadin.ui.Table;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -203,12 +208,13 @@ public class GolfEventWindow extends Window
 		if (matchCollection != null && !matchCollection.isEmpty())
 		{
 			Accordion matches = new Accordion();
+			matches.setStyleName("matchlist");
 			// matches.setHeight(100.0f, Unit.PERCENTAGE)
 			root.addComponent(matches);
 
 			for (Match match : matchCollection)
 			{
-				matches.addTab(getMatchComponent(match), "Match " + match.getEventMatchNo());
+				matches.addTab(getMatchComponent(match), String.format("Match %s (%s)", match.getEventMatchNo(), getPlayers(match)), FontAwesome.LIST);
 			}
 			root.setComponentAlignment(matches, Alignment.MIDDLE_CENTER);
 		}
@@ -228,6 +234,28 @@ public class GolfEventWindow extends Window
 	/**
 	 * Purpose:
 	 * <br>
+	 * getPlayers<br>
+	 * <br>
+	 * @param match
+	 * @return<br>
+	 */
+	private String getPlayers(Match match)
+	{
+		StringBuilder sb = new StringBuilder();
+		List<ScoreCard> scoreCards = new ArrayList<>(match.getScoreCards());
+		scoreCards.sort((ScoreCard o1, ScoreCard o2) -> o1.getLineNumber().compareTo(o2.getLineNumber()));
+		for (ScoreCard card : scoreCards)
+		{
+			sb.append(card.getPerson().getName());
+			sb.append(", ");
+		}
+		String players = sb.toString();
+		return players.substring(0, players.length() - 2);
+	}
+
+	/**
+	 * Purpose:
+	 * <br>
 	 * getMatchComponent<br>
 	 * <br>
 	 * @param match
@@ -236,13 +264,7 @@ public class GolfEventWindow extends Window
 	private Component getMatchComponent(final Match match)
 	{
 		VerticalLayout layout = new VerticalLayout();
-		for (ScoreCard scoreCard : match.getScoreCards())
-		{
-			HorizontalLayout player = new HorizontalLayout();
-			layout.addComponent(player);
-
-			player.addComponent(new Label(scoreCard.getPerson().getName()));
-		}
+		layout.addComponent(createMatchSummary(match));
 		HorizontalLayout buttons = new HorizontalLayout();
 		layout.addComponent(buttons);
 
@@ -272,6 +294,78 @@ public class GolfEventWindow extends Window
 
 		layout.setSpacing(false);
 		return layout;
+	}
+
+	/**
+	 * Purpose:
+	 * <br>
+	 * createMatchSummary<br>
+	 * <br>
+	 * @param match
+	 * @return<br>
+	 */
+	private Component createMatchSummary(Match match)
+	{
+		Table table = new Table();
+		table.setStyleName("scorecard");
+		table.addContainerProperty("Player", String.class, null);
+		table.addContainerProperty("Gender", String.class, null);
+		table.addContainerProperty("HCP", Integer.class, null);
+		table.addContainerProperty("Grs", Integer.class, null);
+		table.addContainerProperty("Net", Integer.class, null);
+		table.addContainerProperty("Pts", Integer.class, null);
+		//
+		List<ScoreCard> scoreCards = getScoreCards(match);
+		for (ScoreCard card : scoreCards)
+		{
+			table.addItem(new Object[]
+			{ card.getPerson().getName(), card.getPerson().getGender().toString(), card.getHandicap(), card.getTotalStrokes(), card.getNetStrokes(),
+					card.getStandardPoints() }, card.getScoreCardNo());
+		}
+		// Show exactly the currently contained rows (items)
+		table.setPageLength(table.size());
+		//
+		table.setCellStyleGenerator(new Table.CellStyleGenerator()
+		{
+			/**
+			 * serialVersionUID
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public String getStyle(Table source, Object itemId, Object propertyId)
+			{
+				Item row = source.getItem(itemId);
+				Property<?> genderProp = row.getItemProperty("Gender");
+				String genderValue = (String) genderProp.getValue();
+				String propertyValue = String.valueOf(propertyId);
+				boolean male = "male".equalsIgnoreCase(genderValue);
+				LOGGER.debug(String.format("itemId:%s - genderValue:%s - propertyValue:%s", itemId, genderValue, propertyValue));
+				if ("HCP".equalsIgnoreCase(propertyValue))
+				{
+					return male ? "menPar" : "ladiesPar";
+				}
+				return null;
+			}
+		});
+		//
+		table.setVisibleColumns("Player", "HCP", "Grs", "Net", "Pts");
+		return table;
+	}
+
+	/**
+	 * Purpose:
+	 * <br>
+	 * getScoreCards<br>
+	 * <br>
+	 * @param match
+	 * @return<br>
+	 */
+	private List<ScoreCard> getScoreCards(Match match)
+	{
+		List<ScoreCard> scoreCards = new ArrayList<>(match.getScoreCards());
+		scoreCards.sort((ScoreCard o1, ScoreCard o2) -> o1.getLineNumber().compareTo(o2.getLineNumber()));
+		return scoreCards;
 	}
 
 	/**

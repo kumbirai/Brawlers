@@ -25,6 +25,7 @@ public class ScorecardLine
 {
 	private String style;
 	private String name;
+	private String gender;
 	private Integer handicap;
 	private Object hole1;
 	private Object hole2;
@@ -87,6 +88,22 @@ public class ScorecardLine
 	public void setName(String name)
 	{
 		this.name = name;
+	}
+
+	/** Getter for the <code>gender</code> attribute.<br>
+	 * @return String - value of the attribute <code>gender</code>.
+	 */
+	public String getGender()
+	{
+		return this.gender;
+	}
+
+	/** Setter for the <code>gender</code> attribute.<br>
+	 * @param String gender
+	 */
+	public void setGender(String gender)
+	{
+		this.gender = gender;
 	}
 
 	/** Getter for the <code>handicap</code> attribute.<br>
@@ -449,6 +466,7 @@ public class ScorecardLine
 	{
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((this.gender == null) ? 0 : this.gender.hashCode());
 		result = prime * result + ((this.handicap == null) ? 0 : this.handicap.hashCode());
 		result = prime * result + ((this.hole1 == null) ? 0 : this.hole1.hashCode());
 		result = prime * result + ((this.hole10 == null) ? 0 : this.hole10.hashCode());
@@ -489,6 +507,13 @@ public class ScorecardLine
 		if (!(obj instanceof ScorecardLine))
 			return false;
 		ScorecardLine other = (ScorecardLine) obj;
+		if (this.gender == null)
+		{
+			if (other.gender != null)
+				return false;
+		}
+		else if (!this.gender.equals(other.gender))
+			return false;
 		if (this.handicap == null)
 		{
 			if (other.handicap != null)
@@ -667,9 +692,9 @@ public class ScorecardLine
 	public String toString()
 	{
 		return String.format(
-				"ScorecardLine [style=%s, name=%s, handicap=%s, 01=%s, 02=%s, 03=%s, 04=%s, 05=%s, 06=%s, 07=%s, 08=%s, 09=%s, 10=%s, 11=%s, 12=%s, 13=%s, 14=%s, 15=%s, 16=%s, 17=%s, 18=%s, totalStrokes=%s, netStrokes=%s, standardPoints=%s]",
-				this.style, this.name, this.handicap, this.hole1, this.hole2, this.hole3, this.hole4, this.hole5, this.hole6, this.hole7, this.hole8,
-				this.hole9, this.hole10, this.hole11, this.hole12, this.hole13, this.hole14, this.hole15, this.hole16, this.hole17, this.hole18,
+				"ScorecardLine [style=%s, name=%s, gender=%s, handicap=%s, 01=%s, 02=%s, 03=%s, 04=%s, 05=%s, 06=%s, 07=%s, 08=%s, 09=%s, 10=%s, 11=%s, 12=%s, 13=%s, 14=%s, 15=%s, 16=%s, 17=%s, 18=%s, totalStrokes=%s, netStrokes=%s, standardPoints=%s]",
+				this.style, this.name, this.gender, this.handicap, this.hole1, this.hole2, this.hole3, this.hole4, this.hole5, this.hole6, this.hole7,
+				this.hole8, this.hole9, this.hole10, this.hole11, this.hole12, this.hole13, this.hole14, this.hole15, this.hole16, this.hole17, this.hole18,
 				this.totalStrokes, this.netStrokes, this.standardPoints);
 	}
 }

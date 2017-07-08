@@ -19,16 +19,27 @@ import org.vaadin.virkki.carousel.client.widget.gwt.CarouselLoadMode;
 
 import com.kumbirai.golf.data.course.HoleInfo;
 import com.kumbirai.golf.data.score.Match;
+import com.kumbirai.golf.data.score.Score;
+import com.kumbirai.golf.data.score.ScoreCard;
+import com.vaadin.data.Container;
+import com.vaadin.data.Item;
+import com.vaadin.data.Property;
+import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.data.Property.ValueChangeListener;
+import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.server.Responsive;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.Field;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.ColumnHeaderMode;
+import com.vaadin.ui.TableFieldFactory;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -56,7 +67,7 @@ public class ScoreWindow extends Window
 	private static final long serialVersionUID = 1L;
 	private static final Logger LOGGER = LogManager.getLogger(ScoreWindow.class.getName());
 	public static final String ID = "scorewindow";
-	private Integer[][] courseInfo = new Integer[18][4];
+	private HoleInfo[] courseInfo = new HoleInfo[18];
 
 	/**
 	 * Constructor:
@@ -98,6 +109,8 @@ public class ScoreWindow extends Window
 	private HorizontalCarousel buildCarousel(final Match match, int index)
 	{
 		final HorizontalCarousel carousel = new HorizontalCarousel();
+		carousel.setWidth(400.0f, Unit.PIXELS);
+		carousel.setHeight(350.0f, Unit.PIXELS);
 
 		// Only react to arrow keys when focused
 		carousel.setArrowKeysMode(ArrowKeysMode.FOCUS);
@@ -128,6 +141,7 @@ public class ScoreWindow extends Window
 		{
 			carousel.addComponent(getHole(holeNumber, match, courseInfo[holeNumber - 1]));
 		}
+		carousel.addComponent(createPlayerSummary(match));
 	}
 
 	/**
@@ -138,16 +152,14 @@ public class ScoreWindow extends Window
 	 * @param match
 	 * @return<br>
 	 */
-	private Integer[][] getCourseInfo(Match match)
+	private HoleInfo[] getCourseInfo(Match match)
 	{
-		Integer[][] courseInfo = new Integer[18][4];
+		courseInfo = new HoleInfo[18];
 		List<HoleInfo> holes = new ArrayList<>(match.getGolfEvent().getCourse().getHoles());
 		holes.sort((HoleInfo o1, HoleInfo o2) -> o1.getHoleNumber().compareTo(o2.getHoleNumber()));
 		for (int i = 0; i < holes.size(); i++)
 		{
-			HoleInfo holeInfo = holes.get(i);
-			courseInfo[i] = new Integer[]
-			{ holeInfo.getMenParRating(), holeInfo.getMenStrokeRating(), holeInfo.getLadiesParRating(), holeInfo.getLadiesStrokeRating() };
+			courseInfo[i] = holes.get(i);
 		}
 		return courseInfo;
 	}
@@ -162,7 +174,7 @@ public class ScoreWindow extends Window
 	 * @param holeInfo
 	 * @return<br>
 	 */
-	private Component getHole(int holeNumber, final Match match, Integer[] holeInfo)
+	private Component getHole(int holeNumber, final Match match, HoleInfo holeInfo)
 	{
 		VerticalLayout content = new VerticalLayout();
 
@@ -193,7 +205,7 @@ public class ScoreWindow extends Window
 	 * @param holeInfo
 	 * @return<br>
 	 */
-	private Component createHoleInfoGrid(Integer[] holeInfo)
+	private Component createHoleInfoGrid(HoleInfo holeInfo)
 	{
 		Table table = new Table();
 		// Define two columns for the built-in container
@@ -201,13 +213,13 @@ public class ScoreWindow extends Window
 		table.addContainerProperty("Value", Integer.class, null);
 
 		table.addItem(new Object[]
-		{ "Men's Par", holeInfo[0] }, 0);
+		{ "Men's Par", holeInfo.getMenParRating() }, 0);
 		table.addItem(new Object[]
-		{ "Men's Handicap", holeInfo[1] }, 1);
+		{ "Men's Handicap", holeInfo.getMenStrokeRating() }, 1);
 		table.addItem(new Object[]
-		{ "Ladies' Par", holeInfo[2] }, 2);
+		{ "Ladies' Par", holeInfo.getLadiesParRating() }, 2);
 		table.addItem(new Object[]
-		{ "Ladies' Handicap", holeInfo[3] }, 3);
+		{ "Ladies' Handicap", holeInfo.getLadiesStrokeRating() }, 3);
 
 		// Show exactly the currently contained rows (items)
 		table.setPageLength(table.size());
@@ -223,8 +235,7 @@ public class ScoreWindow extends Window
 			@Override
 			public String getStyle(Table source, Object itemId, Object propertyId)
 			{
-				LOGGER.debug(String.format("%s - %s - %s", source, itemId, propertyId));
-				String propertyValue = propertyId != null ? (String) propertyId : "";
+				String propertyValue = String.valueOf(propertyId);
 				if ("Description".equalsIgnoreCase(propertyValue))
 					return "header";
 				if ("0".equals(String.valueOf(itemId)))
@@ -253,10 +264,204 @@ public class ScoreWindow extends Window
 	private Component createPlayerScores(Match match, int holeNumber)
 	{
 		Table table = new Table();
+		table.setEditable(true);
+		table.setStyleName("scorecard");
+		table.addContainerProperty("Player", String.class, null);
+		table.addContainerProperty("Gender", String.class, null);
+		table.addContainerProperty("HCP", Integer.class, null);
+		table.addContainerProperty("Stks", Integer.class, null);
+		table.addContainerProperty("Pts", Integer.class, null);
+		//
+		List<ScoreCard> scoreCards = getScoreCards(match);
+		for (ScoreCard card : scoreCards)
+		{
+			Score score = getHoleScore(card, holeNumber);
+			table.addItem(new Object[]
+			{ card.getPerson().getName(), card.getPerson().getGender().toString(), card.getHandicap(), score.getStrokes(),
+					score.getIpsResult().getStandardPoints() }, score.getScoreNo());
+		}
 		// Show exactly the currently contained rows (items)
 		table.setPageLength(table.size());
-		table.setColumnHeaderMode(ColumnHeaderMode.HIDDEN);
+		//
+		table.setCellStyleGenerator(new Table.CellStyleGenerator()
+		{
+			/**
+			 * serialVersionUID
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public String getStyle(Table source, Object itemId, Object propertyId)
+			{
+				Item row = source.getItem(itemId);
+				Property<?> genderProp = row.getItemProperty("Gender");
+				String genderValue = (String) genderProp.getValue();
+				String propertyValue = String.valueOf(propertyId);
+				boolean male = "male".equalsIgnoreCase(genderValue);
+				if ("HCP".equalsIgnoreCase(propertyValue))
+				{
+					return male ? "menPar" : "ladiesPar";
+				}
+				return null;
+			}
+		});
+		//
+		table.setVisibleColumns("Player", "HCP", "Stks", "Pts");
+		table.setTableFieldFactory(new TableFieldFactory()
+		{
+			/**
+			 * serialVersionUID
+			 */
+			private static final long serialVersionUID = 1L;
+
+			public Field createField(Container container, Object itemId, Object propertyId, Component uiContext)
+			{
+				// User can only edit the Strokes column
+				if (!"Stks".equals(propertyId))
+				{
+					return null;
+				}
+				else
+				{ // The Strokes column - Use a ComboBox
+					ComboBox field = new ComboBox();
+					field.setData(itemId);
+					field.setInputPrompt("Strokes");
+					field.setContainerDataSource(generateContainer());
+					field.setNullSelectionAllowed(false);
+					field.select(field.getItemIds().iterator().next());
+					field.setWidth(60.0f, Unit.PIXELS);
+					field.addValueChangeListener(new ValueChangeListener()
+					{
+						/**
+						 * serialVersionUID
+						 */
+						private static final long serialVersionUID = 1L;
+
+						@Override
+						public void valueChange(ValueChangeEvent event)
+						{
+							LOGGER.debug(String.format("(%s) New value for %s is %s", event.getProperty().getValue(), field.getData(), field.getValue()));
+						}
+					});
+					return field;
+				}
+			}
+
+			private Container generateContainer()
+			{
+				IndexedContainer container = new IndexedContainer();
+				container.addContainerProperty("index", Integer.class, null);
+				container.addContainerProperty("value", Integer.class, null);
+				for (int i = 0; i <= 12; i++)
+				{
+					Item item = container.addItem(i);
+					item.getItemProperty("index").setValue(i);
+					item.getItemProperty("value").setValue(i);
+				}
+				return container;
+			}
+		});
 		return table;
+	}
+
+	/**
+	 * Purpose:
+	 * <br>
+	 * createPlayerSummary<br>
+	 * <br>
+	 * @param match
+	 * @return<br>
+	 */
+	private Component createPlayerSummary(Match match)
+	{
+		VerticalLayout content = new VerticalLayout();
+
+		Label lblCourse = new Label(match.getGolfEvent().getCourse().toString());
+		lblCourse.addStyleName(ValoTheme.LABEL_BOLD);
+		lblCourse.addStyleName(ValoTheme.LABEL_COLORED);
+		content.addComponent(lblCourse);
+
+		Label lblTotals = new Label("Totals");
+		lblTotals.addStyleName(ValoTheme.LABEL_BOLD);
+		lblTotals.addStyleName(ValoTheme.LABEL_COLORED);
+		content.addComponent(lblTotals);
+
+		Table table = new Table();
+		table.setStyleName("scorecard");
+		table.addContainerProperty("Player", String.class, null);
+		table.addContainerProperty("Gender", String.class, null);
+		table.addContainerProperty("HCP", Integer.class, null);
+		table.addContainerProperty("Grs", Integer.class, null);
+		table.addContainerProperty("Net", Integer.class, null);
+		table.addContainerProperty("Pts", Integer.class, null);
+		//
+		List<ScoreCard> scoreCards = getScoreCards(match);
+		for (ScoreCard card : scoreCards)
+		{
+			table.addItem(new Object[]
+			{ card.getPerson().getName(), card.getPerson().getGender().toString(), card.getHandicap(), card.getTotalStrokes(), card.getNetStrokes(),
+					card.getStandardPoints() }, card.getScoreCardNo());
+		}
+		// Show exactly the currently contained rows (items)
+		table.setPageLength(table.size());
+		//
+		table.setCellStyleGenerator(new Table.CellStyleGenerator()
+		{
+			/**
+			 * serialVersionUID
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public String getStyle(Table source, Object itemId, Object propertyId)
+			{
+				Item row = source.getItem(itemId);
+				Property<?> genderProp = row.getItemProperty("Gender");
+				String genderValue = (String) genderProp.getValue();
+				String propertyValue = String.valueOf(propertyId);
+				boolean male = "male".equalsIgnoreCase(genderValue);
+				if ("HCP".equalsIgnoreCase(propertyValue))
+				{
+					return male ? "menPar" : "ladiesPar";
+				}
+				return null;
+			}
+		});
+		//
+		table.setVisibleColumns("Player", "HCP", "Grs", "Net", "Pts");
+		content.addComponent(table);
+		return content;
+	}
+
+	/**
+	 * Purpose:
+	 * <br>
+	 * getScoreCards<br>
+	 * <br>
+	 * @param match
+	 * @return<br>
+	 */
+	private List<ScoreCard> getScoreCards(Match match)
+	{
+		List<ScoreCard> scoreCards = new ArrayList<>(match.getScoreCards());
+		scoreCards.sort((ScoreCard o1, ScoreCard o2) -> o1.getLineNumber().compareTo(o2.getLineNumber()));
+		return scoreCards;
+	}
+
+	/**
+	 * Purpose:
+	 * <br>
+	 * getHoleScore<br>
+	 * <br>
+	 * @param scoreCard
+	 * @param holeNumber
+	 * @return<br>
+	 */
+	private Score getHoleScore(ScoreCard scoreCard, int holeNumber)
+	{
+		List<Score> scores = new ArrayList<>(scoreCard.getScores());
+		scores.sort((Score o1, Score o2) -> o1.getHoleNumber().compareTo(o2.getHoleNumber()));
+		return scores.get(holeNumber - 1);
 	}
 
 	/**

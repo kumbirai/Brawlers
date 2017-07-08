@@ -116,9 +116,13 @@ public class ScoreCardWindow extends Window
 		VerticalLayout content = new VerticalLayout();
 		// content.setHeight(100.0f, Unit.PERCENTAGE)
 
-		Label lblEventDetails = new Label(getEventDetails(match));
-		lblEventDetails.addStyleName(ValoTheme.LABEL_H1);
-		content.addComponent(lblEventDetails);
+		Label lblGolfCourse = new Label(match.getGolfEvent().getCourse().getCourseName());
+		lblGolfCourse.addStyleName(ValoTheme.LABEL_H1);
+		content.addComponent(lblGolfCourse);
+
+		Label lblEventDate = new Label(StringUtils.formatDate(match.getGolfEvent().getEventDate(), "d MMM yyyy"));
+		lblEventDate.addStyleName(ValoTheme.LABEL_LARGE);
+		content.addComponent(lblEventDate);
 
 		Table scoreCard = createScoreCardTable();
 		content.addComponent(scoreCard);
@@ -205,11 +209,14 @@ public class ScoreCardWindow extends Window
 			{
 				Item row = source.getItem(itemId);
 				Property<?> styleProp = row.getItemProperty("style");
-				String styleValue = (String) styleProp.getValue();
-				String propertyValue = propertyId != null ? (String) propertyId : "";
+				String styleValue = String.valueOf(styleProp.getValue());
+				Property<?> genderProp = row.getItemProperty("gender");
+				String genderValue = String.valueOf(genderProp.getValue());
+				String propertyValue = String.valueOf(propertyId);
 				boolean header = "name".equalsIgnoreCase(propertyValue) || "handicap".equalsIgnoreCase(propertyValue);
 				if ("person".equalsIgnoreCase(styleValue) && propertyId != null)
 				{
+					boolean male = "male".equalsIgnoreCase(genderValue);
 					return header ? "name" : isStyledProperty(propertyValue.toUpperCase()) ? propertyValue : null;
 				}
 				if (!"person".equalsIgnoreCase(styleValue) && propertyId != null && header)
