@@ -57,10 +57,10 @@ public class SecurityRoleFacade extends GenericFacade<SecurityRole> implements S
 	}
 
 	/** (non-Javadoc)
-	 * @see com.kumbirai.facade.GenericFacade#contains(java.lang.Object)
+	 * @see com.kumbirai.facade.GenericFacade#hasPrimaryKey(java.lang.Object)
 	 */
 	@Override
-	public boolean contains(SecurityRole entity)
+	protected boolean hasPrimaryKey(SecurityRole entity)
 	{
 		return entity.getSecurityRoleNo() != null && entity.getSecurityRoleNo() > 0;
 	}

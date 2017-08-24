@@ -80,10 +80,10 @@ public class PersonInfoLoginProfileFacade extends GenericFacade<PersonInfoLoginP
 	}
 
 	/** (non-Javadoc)
-	 * @see com.kumbirai.facade.GenericFacade#contains(java.lang.Object)
+	 * @see com.kumbirai.facade.GenericFacade#hasPrimaryKey(java.lang.Object)
 	 */
 	@Override
-	public boolean contains(PersonInfoLoginProfile entity)
+	protected boolean hasPrimaryKey(PersonInfoLoginProfile entity)
 	{
 		return entity.getPersonInfoNo() != null && entity.getPersonInfoNo() > 0;
 	}

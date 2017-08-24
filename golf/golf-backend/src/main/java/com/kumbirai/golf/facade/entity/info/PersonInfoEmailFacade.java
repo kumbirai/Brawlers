@@ -57,10 +57,10 @@ public class PersonInfoEmailFacade extends GenericFacade<PersonInfoEmail> implem
 	}
 
 	/** (non-Javadoc)
-	 * @see com.kumbirai.facade.GenericFacade#contains(java.lang.Object)
+	 * @see com.kumbirai.facade.GenericFacade#hasPrimaryKey(java.lang.Object)
 	 */
 	@Override
-	public boolean contains(PersonInfoEmail entity)
+	protected boolean hasPrimaryKey(PersonInfoEmail entity)
 	{
 		return entity.getPersonInfoNo() != null && entity.getPersonInfoNo() > 0;
 	}

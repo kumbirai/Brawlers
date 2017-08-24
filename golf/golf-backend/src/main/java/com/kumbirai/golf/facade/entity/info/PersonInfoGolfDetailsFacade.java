@@ -57,10 +57,10 @@ public class PersonInfoGolfDetailsFacade extends GenericFacade<PersonInfoGolfDet
 	}
 
 	/** (non-Javadoc)
-	 * @see com.kumbirai.facade.GenericFacade#contains(java.lang.Object)
+	 * @see com.kumbirai.facade.GenericFacade#hasPrimaryKey(java.lang.Object)
 	 */
 	@Override
-	public boolean contains(PersonInfoGolfDetails entity)
+	protected boolean hasPrimaryKey(PersonInfoGolfDetails entity)
 	{
 		return entity.getPersonInfoNo() != null && entity.getPersonInfoNo() > 0;
 	}

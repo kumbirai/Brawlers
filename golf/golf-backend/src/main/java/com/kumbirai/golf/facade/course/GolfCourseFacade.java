@@ -57,10 +57,10 @@ public class GolfCourseFacade extends GenericFacade<GolfCourse> implements Seria
 	}
 
 	/** (non-Javadoc)
-	 * @see com.kumbirai.facade.GenericFacade#contains(java.lang.Object)
+	 * @see com.kumbirai.facade.GenericFacade#hasPrimaryKey(java.lang.Object)
 	 */
 	@Override
-	public boolean contains(GolfCourse entity)
+	protected boolean hasPrimaryKey(GolfCourse entity)
 	{
 		return entity.getGolfCourseNo() != null && entity.getGolfCourseNo() > 0;
 	}

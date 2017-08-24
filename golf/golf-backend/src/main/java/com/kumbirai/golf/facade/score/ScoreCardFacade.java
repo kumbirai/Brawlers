@@ -57,10 +57,10 @@ public class ScoreCardFacade extends GenericFacade<ScoreCard> implements Seriali
 	}
 
 	/** (non-Javadoc)
-	 * @see com.kumbirai.facade.GenericFacade#contains(java.lang.Object)
+	 * @see com.kumbirai.facade.GenericFacade#hasPrimaryKey(java.lang.Object)
 	 */
 	@Override
-	public boolean contains(ScoreCard entity)
+	protected boolean hasPrimaryKey(ScoreCard entity)
 	{
 		return entity.getScoreCardNo() != null && entity.getScoreCardNo() > 0;
 	}

@@ -57,10 +57,10 @@ public class ScoreFacade extends GenericFacade<Score> implements Serializable
 	}
 
 	/** (non-Javadoc)
-	 * @see com.kumbirai.facade.GenericFacade#contains(java.lang.Object)
+	 * @see com.kumbirai.facade.GenericFacade#hasPrimaryKey(java.lang.Object)
 	 */
 	@Override
-	public boolean contains(Score entity)
+	protected boolean hasPrimaryKey(Score entity)
 	{
 		return entity.getScoreNo() != null && entity.getScoreNo() > 0;
 	}

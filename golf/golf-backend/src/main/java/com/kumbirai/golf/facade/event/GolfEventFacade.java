@@ -61,10 +61,10 @@ public class GolfEventFacade extends GenericFacade<GolfEvent> implements Seriali
 	}
 
 	/** (non-Javadoc)
-	 * @see com.kumbirai.facade.GenericFacade#contains(java.lang.Object)
+	 * @see com.kumbirai.facade.GenericFacade#hasPrimaryKey(java.lang.Object)
 	 */
 	@Override
-	public boolean contains(GolfEvent entity)
+	protected boolean hasPrimaryKey(GolfEvent entity)
 	{
 		return entity.getEventNo() != null && entity.getEventNo() > 0;
 	}

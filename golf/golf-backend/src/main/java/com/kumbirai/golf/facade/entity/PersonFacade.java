@@ -76,10 +76,10 @@ public class PersonFacade extends GenericFacade<Person> implements Serializable
 	}
 
 	/** (non-Javadoc)
-	 * @see com.kumbirai.facade.GenericFacade#contains(java.lang.Object)
+	 * @see com.kumbirai.facade.GenericFacade#hasPrimaryKey(java.lang.Object)
 	 */
 	@Override
-	public boolean contains(Person entity)
+	protected boolean hasPrimaryKey(Person entity)
 	{
 		return entity.getPersonNo() != null && entity.getPersonNo() > 0;
 	}

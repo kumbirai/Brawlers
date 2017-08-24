@@ -57,10 +57,10 @@ public class MatchFacade extends GenericFacade<Match> implements Serializable
 	}
 
 	/** (non-Javadoc)
-	 * @see com.kumbirai.facade.GenericFacade#contains(java.lang.Object)
+	 * @see com.kumbirai.facade.GenericFacade#hasPrimaryKey(java.lang.Object)
 	 */
 	@Override
-	public boolean contains(Match entity)
+	protected boolean hasPrimaryKey(Match entity)
 	{
 		return entity.getMatchNo() != null && entity.getMatchNo() > 0;
 	}

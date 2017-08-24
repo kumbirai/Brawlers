@@ -57,10 +57,10 @@ public class PersonInfoTelFacade extends GenericFacade<PersonInfoTel> implements
 	}
 
 	/** (non-Javadoc)
-	 * @see com.kumbirai.facade.GenericFacade#contains(java.lang.Object)
+	 * @see com.kumbirai.facade.GenericFacade#hasPrimaryKey(java.lang.Object)
 	 */
 	@Override
-	public boolean contains(PersonInfoTel entity)
+	protected boolean hasPrimaryKey(PersonInfoTel entity)
 	{
 		return entity.getPersonInfoNo() != null && entity.getPersonInfoNo() > 0;
 	}

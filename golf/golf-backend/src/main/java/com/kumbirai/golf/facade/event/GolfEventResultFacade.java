@@ -57,10 +57,10 @@ public class GolfEventResultFacade extends GenericFacade<GolfEventResult> implem
 	}
 
 	/** (non-Javadoc)
-	 * @see com.kumbirai.facade.GenericFacade#contains(java.lang.Object)
+	 * @see com.kumbirai.facade.GenericFacade#hasPrimaryKey(java.lang.Object)
 	 */
 	@Override
-	public boolean contains(GolfEventResult entity)
+	protected boolean hasPrimaryKey(GolfEventResult entity)
 	{
 		return entity.getEventNo() != null && entity.getEventNo() > 0;
 	}

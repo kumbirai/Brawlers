@@ -55,10 +55,10 @@ public class HoleInfoFacade extends GenericFacade<HoleInfo>
 	}
 
 	/** (non-Javadoc)
-	 * @see com.kumbirai.facade.GenericFacade#contains(java.lang.Object)
+	 * @see com.kumbirai.facade.GenericFacade#hasPrimaryKey(java.lang.Object)
 	 */
 	@Override
-	public boolean contains(HoleInfo entity)
+	protected boolean hasPrimaryKey(HoleInfo entity)
 	{
 		return entity.getHoleInfoNo() != null && entity.getHoleInfoNo() > 0;
 	}
